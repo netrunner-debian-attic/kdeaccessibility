@@ -1,4 +1,10 @@
-kdeaccessibility (4:3.90.1-1) unstable; urgency=low
+kdeaccessibility (4:3.96.0-1) experimental; urgency=low
+
+  * New upstream release. 
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Fri, 16 Nov 2007 00:27:07 +0100
+
+kdeaccessibility (4:3.90.1-1) experimental; urgency=low
 
   * Initial release.
 
