@@ -5,6 +5,7 @@ kdeaccessibility (4:4.0.0-1) UNRELEASED; urgency=low
   +++ Changes by Matthew Rosewarne:
 
   * Add Homepage: to control.
+  * Tweak package description.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 16 Nov 2007 00:27:07 +0100
 
