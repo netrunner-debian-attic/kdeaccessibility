@@ -2,10 +2,13 @@ Source: kdeaccessibility
 Section: kde
 Priority: optional
 Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
-Build-Depends: cdbs, debhelper (>= 5), cmake (>= 2.4.5), quilt, kdelibs5-dev (>=4:3.96.0),
- kdebase-workspace-dev (>=4:3.96.0)
-Standards-Version: 3.7.2
-Homepage: http://accessibility.kde.org
+Build-Depends: cdbs, debhelper (>= 5), cmake (>= 2.4.5), quilt, 
+ kdelibs5-dev (>=4:4.0.81),
+ libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386],
+Standards-Version: 3.7.3
+Homepage: http://www.kde.org/
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-kde/branches/kde4/packages/kdeaccessibility
+Vcs-Svn: svn://svn.debian.org/pkg-kde/branches/kde4/packages/kdeaccessibility
 
 Package: kdeaccessibility
 Architecture: any

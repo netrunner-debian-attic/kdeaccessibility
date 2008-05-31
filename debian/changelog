@@ -1,13 +1,9 @@
-kdeaccessibility (4:4.0.0-1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.0.81+svn814845-1) UNRELEASED; urgency=low
 
-  * New upstream release.
+  * New upstream snapshot. 
+  * Update build depends and add libasound2-dev.
 
-  +++ Changes by Matthew Rosewarne:
-
-  * Add Homepage: to control.
-  * Tweak package description.
-
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 16 Nov 2007 00:27:07 +0100
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 31 May 2008 20:03:10 +0200
 
 kdeaccessibility (4:3.90.1-1) experimental; urgency=low
 
