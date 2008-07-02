@@ -1,9 +1,13 @@
-kdeaccessibility (4:4.0.81+svn814845-1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.0.84-1) experimental; urgency=low
+
+  * New upstream snapshot.
+
+  +++ Changes by Ana Beatriz Guerrero Lopez:
 
   * New upstream snapshot. 
   * Update build depends and add libasound2-dev.
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 31 May 2008 20:03:10 +0200
+ -- Sune Vuorela <debian@pusling.com>  Mon, 30 Jun 2008 21:17:58 +0200
 
 kdeaccessibility (4:3.90.1-1) experimental; urgency=low
 
