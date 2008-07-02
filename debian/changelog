@@ -1,6 +1,8 @@
 kdeaccessibility (4:4.0.84-1) experimental; urgency=low
 
   * New upstream snapshot.
+  * Split into packages.
+  * Fix copyright file.
 
   +++ Changes by Ana Beatriz Guerrero Lopez:
 
