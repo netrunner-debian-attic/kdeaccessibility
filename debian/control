@@ -3,7 +3,7 @@ Section: kde
 Priority: optional
 Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
 Build-Depends: cdbs, debhelper (>= 5), cmake (>= 2.4.5), quilt, 
- kdelibs5-dev (>=4:4.0.81),
+ kdelibs5-dev (>=4:4.0.81), x11proto-xext-dev, libxtst-dev, libxt-dev,
  libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386],
 Standards-Version: 3.7.3
 Homepage: http://accessibility.kde.org
