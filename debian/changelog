@@ -1,3 +1,9 @@
+kdeaccessibility (4:4.0.84-2) experimental; urgency=low
+
+  * Some description tweaking.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 07 Jul 2008 02:54:22 +0200
+
 kdeaccessibility (4:4.0.84-1) experimental; urgency=low
 
   * New upstream snapshot.

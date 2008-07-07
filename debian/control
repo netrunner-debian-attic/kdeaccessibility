@@ -6,7 +6,7 @@ Build-Depends: cdbs, debhelper (>= 5), cmake (>= 2.4.5), quilt,
  kdelibs5-dev (>=4:4.0.81), x11proto-xext-dev, libxtst-dev, libxt-dev,
  libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386],
 Standards-Version: 3.7.3
-Homepage: http://accessibility.kde.org
+Homepage: http://www.kde.org
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-kde/branches/kde4/packages/kdeaccessibility
 Vcs-Svn: svn://svn.debian.org/pkg-kde/branches/kde4/packages/kdeaccessibility
 
@@ -23,7 +23,7 @@ Description: accessibility packages from the official KDE release
  educational, graphics and software development.
  .
  This metapackage includes a collection of programs to make KDE more
- accessible, provided with the official release of KDE.
+ accessible, provided with the official release of KDE 4.
 
 Package: kde-icons-mono
 Architecture: all
@@ -31,8 +31,7 @@ Section: kde
 Description: a monochromatic icons theme for KDE
  A monochromatic icon theme for KDE, designed for accessibility purposes.
  .
- This package is part of KDE, as a component of the KDE accessibility module.
- See the 'kde' and 'kdeaccessibility' packages for more information.
+ This package is part of KDE 4 accessibility module.
 
 Package: kmag
 Architecture: any
@@ -46,8 +45,7 @@ Description: a screen magnifier for KDE
  useful for a variety of people: from researchers to artists to web-designers to
  people with low vision.
  .
- This package is part of KDE, as a component of the KDE accessibility module.
- See the 'kde' and 'kdeaccessibility' packages for more information.
+ This package is part of KDE 4 accessibility module.
 
 Package: kmouth
 Architecture: any
@@ -59,8 +57,7 @@ Description: a type-and-say KDE frontend for speech synthesizers
  It includes a history of spoken sentences from which the user can select
  sentences to be re-spoken.
  .
- This package is part of KDE, as a component of the KDE accessibility module.
- See the 'kde' and 'kdeaccessibility' packages for more information.
+ This package is part of KDE 4 accessibility module.
 
 Package: kttsd
 Section: utils
@@ -75,9 +72,7 @@ Description: a Text-to-Speech system for KDE
  kmouth is useful front-ends for this capability, while one of
  festival, flite, and epos are essential back-ends.
  .
- This package is part of KDE, as a component of the KDE accessibility module.
- See the 'kde' and 'kdeaccessibility' packages for more information.
- .
+ This package is part of KDE 4 accessibility module.
 
 Package: kmousetool
 Section: utils
@@ -88,6 +83,5 @@ Description: KDE mouse manipulation tool for the disabled
  designed to help those with repetitive strain injuries, for whom pressing
  buttons hurts.
  .
- This package is part of KDE, as a component of the KDE accessibility module.
- See the 'kde' and 'kdeaccessibility' packages for more information.
+ This package is part of KDE 4 accessibility module.
 
