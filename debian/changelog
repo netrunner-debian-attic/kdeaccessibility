@@ -1,9 +1,9 @@
-kdeaccessibility (4:4.0.98-0) UNRELEASED; urgency=low
+kdeaccessibility (4:4.0.98-1) experimental; urgency=low
 
   * New upstream release, Release Candidate 1.
   * Some description tweaking.
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 07 Jul 2008 02:54:22 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 15 Jul 2008 00:47:34 +0200
 
 kdeaccessibility (4:4.0.84-1) experimental; urgency=low
 
