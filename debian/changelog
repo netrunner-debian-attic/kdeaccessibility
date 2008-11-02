@@ -1,7 +1,7 @@
 kdeaccessibility (4:4.1.3-0) experimental; urgency=low
 
-  * New usptream release
-    -  bump build-deps
+  * New usptream release.
+    - Bump build-depends.
 
   +++ Changes by Ana Beatriz Guerrero Lopez:
 
