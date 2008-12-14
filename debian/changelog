@@ -7,6 +7,8 @@ kdeaccessibility (4:4.1.85+svn896757-0r1) UNRELEASED; urgency=low
     * Remove explicit cmake build dependency.
     * Update install files.
     * Make kdeaccessibility meta package arch:all.
+    * tmp notes: it ask for plasma, but it does not use it currently.
+    * re-add kttsd-contrig-plugins :?
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sun, 14 Dec 2008 20:56:18 +0100
 
