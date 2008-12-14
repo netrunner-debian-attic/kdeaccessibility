@@ -1,3 +1,15 @@
+kdeaccessibility (4:4.1.85+svn896757-0r1) UNRELEASED; urgency=low
+
+    * New upstream development snapshot.
+    * Bump KDE build dependencies to 4.1.85.
+    * Remove build dependencies on x11proto-xext-dev.
+    * Bump Standards-Version to 3.8.0 and add README.source.
+    * Remove explicit cmake build dependency.
+    * Update install files.
+    * Make kdeaccessibility meta package arch:all.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sun, 14 Dec 2008 20:56:18 +0100
+
 kdeaccessibility (4:4.1.3-1) experimental; urgency=low
 
   * New usptream release.
