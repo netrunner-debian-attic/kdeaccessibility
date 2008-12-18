@@ -73,3 +73,4 @@ usr/share/kde4/apps/kmouth/icons/hicolor/48x48/actions/speak.png
 usr/share/kde4/apps/kmouth/kmouthui.rc
 usr/share/kde4/apps/kmouth/phrasebookdialogui.rc
 usr/share/kde4/config/kmouthrc
+usr/share/man/man1/kmouth.1
