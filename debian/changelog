@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.1.85+svn896757-0r1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.1.86+svn903219-0r1) UNRELEASED; urgency=low
 
     * New upstream development snapshot.
     * Bump KDE build dependencies to 4.1.85.
@@ -8,9 +8,9 @@ kdeaccessibility (4:4.1.85+svn896757-0r1) UNRELEASED; urgency=low
     * Update install files.
     * Make kdeaccessibility meta package arch:all.
     * tmp notes: it ask for plasma, but it does not use it currently.
-    * TODO: re-add kttsd-contrig-plugins :?
+    * TODO: kttsd README. need to tell about the non-free stuff
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sun, 14 Dec 2008 20:56:18 +0100
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 03 Jan 2009 14:00:27 +0100
 
 kdeaccessibility (4:4.1.3-1) experimental; urgency=low
 
