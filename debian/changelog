@@ -1,7 +1,7 @@
-kdeaccessibility (4:4.1.87+svn905633-0r1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.1.96+svn905633-0r1) UNRELEASED; urgency=low
 
     * New upstream development snapshot.
-    * Bump KDE build dependencies to 4.1.87.
+    * Bump KDE build dependencies to 4.1.96.
     * Remove build dependencies on x11proto-xext-dev.
     * Bump Standards-Version to 3.8.0 and add README.source.
     * Remove explicit cmake build dependency.
