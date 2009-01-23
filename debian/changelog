@@ -1,14 +1,15 @@
-kdeaccessibility (4:4.1.96+svn911505-0r1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
 
-  * New upstream development snapshot.
-  * Bump KDE build dependencies to 4.1.96.
+  * New upstream release.
+  * Bump KDE build dependencies to 4.2.0.
   * Remove build dependencies on x11proto-xext-dev.
   * Bump Standards-Version to 3.8.0 and add README.source.
   * Remove explicit cmake build dependency.
   * Update install files.
   * Make kdeaccessibility meta package arch:all.
   * tmp notes: it ask for plasma, but it does not use it currently.
-  * TODO: kttsd README. need to tell about the non-free stuff
+  
+  TODO: kttsd README. need to tell about the non-free stuff
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Fri, 16 Jan 2009 20:28:30 +0100
 
