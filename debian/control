@@ -14,7 +14,7 @@ Vcs-Svn: svn://svn.debian.org/pkg-kde/branches/kde4/packages/kdeaccessibility
 Package: kdeaccessibility
 Architecture: all
 Section: kde
-Depends: ${shlibs:Depends}, ${misc:Depends}, kde-icons-mono, kmag
+Depends: kde-icons-mono, kmag, kmouth, kttsd, kmousetool
 Description: accessibility packages from the official KDE release
  KDE is produced by an international technology team that creates free and open
  source software for desktop and portable computing. Among KDE's products are a

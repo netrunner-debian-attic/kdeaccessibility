@@ -10,8 +10,10 @@ kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.8.0 and add README.source.
   * Remove explicit cmake build dependency.
   * Update install files.
-  * Make kdeaccessibility meta package arch:all.
+  * Make kdeaccessibility meta package arch:all and add the rest
+    of applications.
   * Add package with debugging symbols. (Closes: #502438)
+  * Add kttsd.README.Debian about kttsd non free plugins.
 
   +++ Changes by Modestas Vainius:
 
