@@ -11,7 +11,7 @@ kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
   * Remove explicit cmake build dependency.
   * Update install files.
   * Make kdeaccessibility meta package arch:all.
-  * tmp notes: it ask for plasma, but it does not use it currently.
+  * Add package with debugging symbols. (Closes: #502438)
 
   +++ Changes by Modestas Vainius:
 

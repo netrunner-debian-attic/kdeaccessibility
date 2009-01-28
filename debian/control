@@ -86,3 +86,15 @@ Description: KDE mouse manipulation tool for the disabled
  .
  This package is part of KDE 4 accessibility module.
 
+
+Package: kdeaccessibility-dbg
+Section: libdevel
+Architecture: any
+Depends: kdebase-runtime-dbg
+Suggests: kdeaccessibility (= ${source:Version})
+Priority: extra
+Description: debugging symbols for kdeaccessibility
+ This package contains the debugging symbols associated with kdeaccessibility.
+ They will automatically be used by gdb for debugging kdeaccessibility-related
+ issues.
+
