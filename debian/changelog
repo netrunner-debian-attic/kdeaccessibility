@@ -1,12 +1,11 @@
-kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
-
-  +++ Changes by Ana Beatriz Guerrero Lopez:
-
-  TODO: kttsd README. need to tell about the non-free stuff
+kdeaccessibility (4:4.2.0-1) experimental; urgency=low
 
   * New upstream release.
+  
+  +++ Changes by Ana Beatriz Guerrero Lopez:
+
   * Bump KDE build dependencies to 4.2.0.
-  * Remove build dependencies on x11proto-xext-dev.
+  * Remove build dependency on x11proto-xext-dev.
   * Bump Standards-Version to 3.8.0 and add README.source.
   * Remove explicit cmake build dependency.
   * Update install files.
@@ -14,6 +13,7 @@ kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
     of applications.
   * Add package with debugging symbols. (Closes: #502438)
   * Add kttsd.README.Debian about kttsd non free plugins.
+  * Update copyright file.
 
   +++ Changes by Modestas Vainius:
 
@@ -25,7 +25,7 @@ kdeaccessibility (4:4.2.0-0r1) UNRELEASED; urgency=low
     - replace debian/cdbs/kde.mk with
       /usr/share/pkg-kde-tools/qt-kde-team/1/debian-qt-kde.mk in debian/rules.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 24 Jan 2009 03:40:21 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Wed, 28 Jan 2009 23:19:09 +0100
 
 kdeaccessibility (4:4.1.3-1) experimental; urgency=low
 
