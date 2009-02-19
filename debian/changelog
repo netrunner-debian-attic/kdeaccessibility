@@ -4,7 +4,11 @@ kdeaccessibility (4:4.2.0-2) UNRELEASED; urgency=low
 
   * Make versioned depends for the "kdeaccessibility" meta-package.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sun, 01 Feb 2009 15:14:16 +0100
+  +++ Changes by Modestas Vainius:
+
+  * Point Debian Vcs URLs to pkg-kde/trunk (new location).
+
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 20 Feb 2009 00:20:02 +0200
 
 kdeaccessibility (4:4.2.0-1) experimental; urgency=low
 
