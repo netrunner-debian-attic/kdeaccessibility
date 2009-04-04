@@ -1,8 +1,8 @@
-kdeaccessibility (4:4.2.2-0r1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.2.2-1) unstable; urgency=low
 
   * New upstream release.
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Thu, 02 Apr 2009 22:37:18 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 04 Apr 2009 22:10:35 +0200
 
 kdeaccessibility (4:4.2.1-1) experimental; urgency=low
 
