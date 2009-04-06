@@ -90,7 +90,7 @@ Description: KDE mouse manipulation tool for the disabled
 
 
 Package: kdeaccessibility-dbg
-Section: libdevel
+Section: debug
 Architecture: any
 Depends: kdebase-runtime-dbg
 Suggests: kdeaccessibility (= ${source:Version})
