@@ -14,6 +14,16 @@ usr/share/icons/hicolor/16x16/apps/kmouth.png
 usr/share/icons/hicolor/22x22/apps/kmouth.png
 usr/share/icons/hicolor/32x32/apps/kmouth.png
 usr/share/icons/hicolor/48x48/apps/kmouth.png
+usr/share/icons/hicolor/16x16/actions/nospeak.png
+usr/share/icons/hicolor/16x16/actions/speak.png
+usr/share/icons/hicolor/22x22/actions/nospeak.png
+usr/share/icons/hicolor/22x22/actions/speak.png
+usr/share/icons/hicolor/32x32/actions/nospeak.png
+usr/share/icons/hicolor/32x32/actions/speak.png
+usr/share/icons/hicolor/48x48/actions/nospeak.png
+usr/share/icons/hicolor/48x48/actions/speak.png
+usr/share/icons/hicolor/16x16/actions/female.png
+usr/share/icons/hicolor/16x16/actions/male.png
 usr/share/icons/mono/scalable/apps/kmouth.svgz
 usr/share/kde4/apps/kmouth/books/de/de-courteousness.phrasebook
 usr/share/kde4/apps/kmouth/books/de/de-greetings.phrasebook

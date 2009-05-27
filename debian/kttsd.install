@@ -71,13 +71,3 @@ usr/bin/kttsmgr
 usr/lib/kde4/libkttsjobmgrpart.so
 usr/share/applications/kde4/kttsmgr.desktop
 usr/share/kde4/services/kttsjobmgr.desktop
-usr/share/icons/hicolor/16x16/actions/nospeak.png
-usr/share/icons/hicolor/16x16/actions/speak.png
-usr/share/icons/hicolor/22x22/actions/nospeak.png
-usr/share/icons/hicolor/22x22/actions/speak.png
-usr/share/icons/hicolor/32x32/actions/nospeak.png
-usr/share/icons/hicolor/32x32/actions/speak.png
-usr/share/icons/hicolor/48x48/actions/nospeak.png
-usr/share/icons/hicolor/48x48/actions/speak.png
-usr/share/icons/hicolor/16x16/actions/female.png
-usr/share/icons/hicolor/16x16/actions/male.png

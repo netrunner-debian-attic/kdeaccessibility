@@ -2,6 +2,11 @@ kdeaccessibility (4:4.2.2-2) UNRELEASED; urgency=low
 
   * Fix sections.
 
+  +++ changes by Martin Alfke:
+
+  * Move all kmouth icons ([no]speak.png) from kttsd.install to 
+    kmouth.install (Closes: #525062)
+
  -- Sune Vuorela <debian@pusling.com>  Mon, 06 Apr 2009 23:54:55 +0200
 
 kdeaccessibility (4:4.2.2-1) unstable; urgency=low
