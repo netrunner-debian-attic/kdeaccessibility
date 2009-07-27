@@ -94,5 +94,5 @@ later versions, effectively making the programs GPLv2only.
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
 
-The Debian packaging is (C) 2008-2009, Debian-qt-kde team and
+The Debian packaging is Copyright (C) 2008-2009, Debian Qt/KDE team and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL-2'.

@@ -1,3 +1,11 @@
+kdeaccessibility (4:4.2.98-0~pre1) UNRELEASED; urgency=low
+
+  * New upstream release, RC3. 
+  * Bump Standards-Version to 3.8.2.
+  * Update installed files.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 27 Jul 2009 16:10:14 +0200
+
 kdeaccessibility (4:4.2.4-1) unstable; urgency=low
 
   * New upstream release.

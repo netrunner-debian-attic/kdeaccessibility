@@ -13,7 +13,7 @@ usr/lib/kde4/libkttsd_stringreplacerplugin.so
 usr/lib/kde4/libkttsd_talkerchooserplugin.so
 usr/lib/kde4/libkttsd_xmltransformerplugin.so
 usr/lib/libkttsd.so.4
-usr/lib/libkttsd.so.4.2.0
+usr/lib/libkttsd.so.4.3.0
 usr/share/doc/kde4/HTML/en/kttsd/addtalker.png
 usr/share/doc/kde4/HTML/en/kttsd/audio.png
 usr/share/doc/kde4/HTML/en/kttsd/common
