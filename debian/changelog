@@ -3,6 +3,7 @@ kdeaccessibility (4:4.3.0-0r1) UNRELEASED; urgency=low
   * New upstream release. 
   * Bump Standards-Version to 3.8.2.
   * Update installed files.
+  * Bump build dependencies to >= 4.3.0.
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 27 Jul 2009 16:10:14 +0200
 
