@@ -5,8 +5,9 @@ kdeaccessibility (4:4.3.0-2) UNRELEASED; urgency=low
   * kttsd.install: use globbing for the kttsd plugins, otherwise there is
     explicitly indicated a plugin (the ALSA one) which will not be compiled on
     kFreeBSD and Hurd (no libasound2 there). (Closes: #540965)
+  * "DCOP" -> "D-Bus" in kttsd description. (Closes: #534994)
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Wed, 12 Aug 2009 23:46:01 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Wed, 12 Aug 2009 23:48:08 +0200
 
 kdeaccessibility (4:4.3.0-1) unstable; urgency=low
 
