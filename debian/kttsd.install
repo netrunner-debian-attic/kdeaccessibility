@@ -1,17 +1,7 @@
 usr/bin/kttsd
 usr/lib/kde4/kcm_kttsd.so
-usr/lib/kde4/libkttsd_alsaplugin.so
-usr/lib/kde4/libkttsd_commandplugin.so
-usr/lib/kde4/libkttsd_eposplugin.so
-usr/lib/kde4/libkttsd_festivalintplugin.so
-usr/lib/kde4/libkttsd_fliteplugin.so
-usr/lib/kde4/libkttsd_freettsplugin.so
-usr/lib/kde4/libkttsd_hadifixplugin.so
-usr/lib/kde4/libkttsd_phononplugin.so
-usr/lib/kde4/libkttsd_sbdplugin.so
-usr/lib/kde4/libkttsd_stringreplacerplugin.so
-usr/lib/kde4/libkttsd_talkerchooserplugin.so
-usr/lib/kde4/libkttsd_xmltransformerplugin.so
+# there can be plugins installed conditionally on external libraries not available on all archs
+usr/lib/kde4/libkttsd_*.so
 usr/lib/libkttsd.so.4
 usr/lib/libkttsd.so.4.3.0
 usr/share/doc/kde4/HTML/en/kttsd/addtalker.png
@@ -52,18 +42,8 @@ usr/share/kde4/apps/kttsd/xmltransformer/xhtml2ssml_simple.xsl
 usr/share/kde4/apps/kttsd/xslt/SSMLtoPlainText.xsl
 usr/share/kde4/services/kcmkttsd.desktop
 usr/share/kde4/services/kttsd.desktop
-usr/share/kde4/services/kttsd_alsaplugin.desktop
-usr/share/kde4/services/kttsd_commandplugin.desktop
-usr/share/kde4/services/kttsd_eposplugin.desktop
-usr/share/kde4/services/kttsd_festivalintplugin.desktop
-usr/share/kde4/services/kttsd_fliteplugin.desktop
-usr/share/kde4/services/kttsd_freettsplugin.desktop
-usr/share/kde4/services/kttsd_hadifixplugin.desktop
-usr/share/kde4/services/kttsd_phononplugin.desktop
-usr/share/kde4/services/kttsd_sbdplugin.desktop
-usr/share/kde4/services/kttsd_stringreplacerplugin.desktop
-usr/share/kde4/services/kttsd_talkerchooserplugin.desktop
-usr/share/kde4/services/kttsd_xmltransformerplugin.desktop
+# there can be plugins installed conditionally on external libraries not available on all archs
+usr/share/kde4/services/kttsd_*.desktop
 usr/share/kde4/servicetypes/kttsd_audioplugin.desktop
 usr/share/kde4/servicetypes/kttsd_filterplugin.desktop
 usr/share/kde4/servicetypes/kttsd_synthplugin.desktop
