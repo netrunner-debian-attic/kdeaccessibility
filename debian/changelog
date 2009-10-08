@@ -1,13 +1,15 @@
+kdeaccessibility (4:4.3.1-2) UNRELEASED; urgency=low
+
+  * Add source.lintian-overrides to ignore lintian warning about missing
+    debug depends. 
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Thu, 08 Oct 2009 16:43:47 +0200
+
 kdeaccessibility (4:4.3.1-1) unstable; urgency=low
 
   * New upstream release. 
   * Bump Standards-Version to 3.8.3, no changes required.
   
- +++ Karl Ferdinand Ebert:
-
-  * Add source.lintian-overrides to ignore lintian warning about missing
-    debug depends.
-
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 12 Sep 2009 17:01:32 +0200
 
 kdeaccessibility (4:4.3.0-2) unstable; urgency=low
