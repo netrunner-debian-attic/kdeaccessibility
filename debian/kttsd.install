@@ -47,7 +47,6 @@ usr/share/kde4/services/kttsjobmgr.desktop
 usr/share/kde4/servicetypes/kttsd_audioplugin.desktop
 usr/share/kde4/servicetypes/kttsd_filterplugin.desktop
 usr/share/kde4/servicetypes/kttsd_synthplugin.desktop
-
 # there can be plugins installed conditionally on external libraries not available on all archs
 usr/lib/kde4/libkttsd_*.so
 usr/share/kde4/services/kttsd_*.desktop
