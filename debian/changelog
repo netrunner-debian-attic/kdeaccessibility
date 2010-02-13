@@ -1,9 +1,17 @@
 kdeaccessibility (4:4.3.4-2) UNRELEASED; urgency=low
 
+  +++ Changes by Modestas Vainius:
+
   * Add myself as uploader.
   * Fix Vcs-Browser URL.
 
- -- Modestas Vainius <modax@debian.org>  Sat, 12 Dec 2009 17:48:55 +0200
+  +++ Changes by Karl Ferdinand Ebert:
+
+  * fix lintian warning: 
+    - obsolete-relation-from-in-source in kmouth replaces: 
+      kttsd (<< 4:4.2.2-2)
+
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org> Sat, 12 Feb 2010 17:01:03 +0200
 
 kdeaccessibility (4:4.3.4-1) unstable; urgency=low
 
