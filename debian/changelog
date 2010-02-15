@@ -9,7 +9,10 @@ kdeaccessibility (4:4.3.4-2) UNRELEASED; urgency=low
     - obsolete-relation-from-in-source in kmouth replaces: 
       kttsd (<< 4:4.2.2-2)
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Mon, 15 Feb 2010 21:26:33 +0100
+  [ Pino Toscano ]
+  * Add kttsd recommend for kmouth. (Closes: #568656)
+
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Mon, 15 Feb 2010 21:30:34 +0100
 
 kdeaccessibility (4:4.3.4-1) unstable; urgency=low
 
