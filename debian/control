@@ -52,8 +52,7 @@ Description: a screen magnifier for KDE
 
 Package: kmouth
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: kttsd
+Depends: ${shlibs:Depends}, ${misc:Depends}, kttsd
 Replaces: kttsd (<< 4:4.2.2-2)
 Section: utils
 Description: a type-and-say KDE frontend for speech synthesizers
