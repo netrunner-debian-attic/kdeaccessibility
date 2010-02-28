@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.4.1-0) UNRELEASED; urgency=low
+kdeaccessibility (4:4.4.1-0r0) UNRELEASED; urgency=low
 
   * New upstream release.
 
@@ -18,6 +18,10 @@ kdeaccessibility (4:4.4.1-0) UNRELEASED; urgency=low
 
   [ Pino Toscano ]
   * Add kttsd as depend for kmouth. (Closes: #568656)
+
+  [ Sune Vuorela ]
+  * Add libspeechd-dev to build-deps
+  * Update install files
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 25 Feb 2010 01:18:47 +0200
 
