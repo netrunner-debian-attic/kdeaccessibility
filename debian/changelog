@@ -18,12 +18,18 @@ kdeaccessibility (4:4.4.1-0r0) UNRELEASED; urgency=low
 
   [ Pino Toscano ]
   * Add kttsd as depend for kmouth. (Closes: #568656)
+  * kttsd now uses Speech Dispatcher for its job, so:
+    - add speech-dispatcher as dependency, as it cannot work otherwise
+    - change the festival recommend to speech-dispatcher-festival
+    - add espeak recommend
+    - remove epos
+    - adjust description
 
   [ Sune Vuorela ]
   * Add libspeechd-dev to build-deps
   * Update install files
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 25 Feb 2010 01:18:47 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Wed, 03 Mar 2010 13:30:31 +0100
 
 kdeaccessibility (4:4.3.4-1) unstable; urgency=low
 
