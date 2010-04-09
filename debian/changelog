@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.4.2-0rc1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.4.2-1) experimental; urgency=low
 
   * New upstream release.
 
@@ -29,7 +29,7 @@ kdeaccessibility (4:4.4.2-0rc1) UNRELEASED; urgency=low
   * Add libspeechd-dev to build-deps
   * Update install files
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 27 Mar 2010 16:59:22 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 09 Apr 2010 18:39:36 +0300
 
 kdeaccessibility (4:4.3.4-1) unstable; urgency=low
 
