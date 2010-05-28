@@ -1,10 +1,10 @@
 usr/bin/kmag
 usr/share/applications/kde4/kmag.desktop
-usr/share/doc/kde4/HTML/en/kmag/common
-usr/share/doc/kde4/HTML/en/kmag/index.cache.bz2
-usr/share/doc/kde4/HTML/en/kmag/index.docbook
-usr/share/doc/kde4/HTML/en/kmag/man-kmag.1.docbook
-usr/share/doc/kde4/HTML/en/kmag/screenshot.png
+usr/share/doc/kde/HTML/en/kmag/common
+usr/share/doc/kde/HTML/en/kmag/index.cache.bz2
+usr/share/doc/kde/HTML/en/kmag/index.docbook
+usr/share/doc/kde/HTML/en/kmag/man-kmag.1.docbook
+usr/share/doc/kde/HTML/en/kmag/screenshot.png
 usr/share/icons/hicolor/16x16/apps/kmag.png
 usr/share/icons/hicolor/32x32/apps/kmag.png
 usr/share/kde4/apps/kmag/kmagui.rc
