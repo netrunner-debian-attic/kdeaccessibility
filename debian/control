@@ -2,7 +2,7 @@ Source: kdeaccessibility
 Section: kde
 Priority: optional
 Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
-Uploaders: Sune Vuorela <debian@pusling.com>, Modestas Vainius <modax@debian.org>
+Uploaders: Sune Vuorela <sune@debian.org>, Modestas Vainius <modax@debian.org>
 Build-Depends: kde-sc-dev-latest (>= 4:4.4.5),
  cdbs, cmake, debhelper (>= 7), pkg-kde-tools (>= 0.9),
  kdelibs5-dev (>= 4:4.4), libxtst-dev, libxt-dev,
@@ -32,16 +32,16 @@ Description: accessibility packages from the official KDE release
 Package: kde-icons-mono
 Architecture: all
 Section: kde
-Description: a monochromatic icons theme for KDE
- A monochromatic icon theme for KDE, designed for accessibility purposes.
+Description: a monochromatic icons theme
+ A monochromatic icon theme, designed for accessibility purposes.
  .
- This package is part of KDE 4 accessibility module.
+ This package is part of KDE accessibility module.
 
 Package: kmag
 Architecture: any
 Section: utils
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: a screen magnifier for KDE
+Description: a screen magnifie
  KDE's screen magnifier tool.
  .
  You can use KMagnifier to magnify a part of the screen just as you would use
@@ -49,14 +49,14 @@ Description: a screen magnifier for KDE
  useful for a variety of people: from researchers to artists to web-designers to
  people with low vision.
  .
- This package is part of KDE 4 accessibility module.
+ This package is part of KDE accessibility module.
 
 Package: kmouth
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, kttsd
 Replaces: kttsd (<< 4:4.2.2-2)
 Section: utils
-Description: a type-and-say KDE frontend for speech synthesizers
+Description: a type-and-say frontend for speech synthesizers
  KDE's type-and-say frontend for speech synthesizers.
  .
  It includes a history of spoken sentences from which the user can select
@@ -77,18 +77,18 @@ Description: a Text-to-Speech system for KDE
  It uses the speech-dispatcher daemon for the actual speech job; kmouth is an
  useful front-end for it.
  .
- This package is part of KDE 4 accessibility module.
+ This package is part of KDE accessibility module.
 
 Package: kmousetool
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: KDE mouse manipulation tool for the disabled
+Description: mouse manipulation tool for the disabled
  KMouseTool clicks the mouse whenever the mouse cursor pauses briefly. It was
  designed to help those with repetitive strain injuries, for whom pressing
  buttons hurts.
  .
- This package is part of KDE 4 accessibility module.
+ This package is part of KDE accessibility module.
 
 
 Package: kdeaccessibility-dbg

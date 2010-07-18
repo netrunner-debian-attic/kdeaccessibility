@@ -1,9 +1,14 @@
 kdeaccessibility (4:4.4.5-1) UNRELEASED; urgency=low
 
+  [ Modestas Vainius ]
   * New upstream release.
   * Bump kde-sc-dev-latest build dependency to 4:4.4.5.
 
- -- Modestas Vainius <modax@debian.org>  Sun, 04 Jul 2010 19:00:49 +0300
+  [ Sune Vuorela ]
+  * Update descriptions
+  * Update email address
+
+ -- Sune Vuorela <sune@debian.org>  Sun, 18 Jul 2010 11:54:34 +0200
 
 kdeaccessibility (4:4.4.4-1) unstable; urgency=low
 
