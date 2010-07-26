@@ -9,8 +9,8 @@ Build-Depends: kde-sc-dev-latest (>= 4:4.4.5),
  libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], libspeechd-dev
 Standards-Version: 3.8.4
 Homepage: http://www.kde.org
-Vcs-Browser: http://svn.debian.org/wsvn/pkg-kde/trunk/packages/kdeaccessibility/#_trunk_packages_kdeaccessibility_
-Vcs-Svn: svn://svn.debian.org/pkg-kde/trunk/packages/kdeaccessibility
+Vcs-Browser: http://git.debian.org/?p=pkg-kde/kde-sc/kdeaccessibility.git
+Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
 
 Package: kdeaccessibility
 Architecture: all
