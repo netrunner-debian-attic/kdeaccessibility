@@ -242,10 +242,3 @@ kdeaccessibility (4:4.0.84-1) experimental; urgency=low
   * Update build depends and add libasound2-dev.
 
  -- Sune Vuorela <debian@pusling.com>  Mon, 30 Jun 2008 21:17:58 +0200
-
-kdeaccessibility (4:3.90.1-1) experimental; urgency=low
-
-  * Initial release.
-
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Wed, 23 May 2007 21:24:37 +0200
-
