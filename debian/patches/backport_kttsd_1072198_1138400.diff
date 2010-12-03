@@ -1,0 +1,994 @@
+From: Jeremy Whiting <jpwhiting@kde.org>
+Subject: add back job manager GUI to kttsmgr settings module
+Origin: backport
+ http://websvn.kde.org/?view=revision&revision=1072198
+ http://websvn.kde.org/?view=revision&revision=1138400
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=599825
+Reviewed-by: Modestas Vainius <modax@debian.org>
+Applied-Upstream: 4.5
+Last-Update: 2010-12-04
+
+This patch is a backport of two upstream commits which bring back job manager
+GUI (almost straightforward copy from KDE 4.3, see websvn link for 1072198) for
+modifying speech settings (output module, language, speed etc.) in the real
+time. However, this GUI is hardly perfect and kind of inconsistent but it
+should be usable to the point it's not RC buggy when my custom fixes are
+applied (see next patches). This GUI is much better alternative than having no
+GUI at all which is one of the reasons for #599825. This patch still does not
+support permanent saving of the changed settings though.
+
+NOTE: this patch is a selective backport of those two upstream commits in order
+to reduce noise in the patch. In particular, all removals of the dead code have
+been kept and r1138400 was replaced with shorter version which achieves the
+same effect. However, this patch can be safely removed when packaging KDE 4.5
+or later, there is nothing new here.
+
+--- a/kttsd/kcmkttsmgr/CMakeLists.txt
++++ b/kttsd/kcmkttsmgr/CMakeLists.txt
+@@ -8,12 +8,13 @@ include_directories( ${CMAKE_SOURCE_DIR}
+ 
+ set(kcm_kttsd_PART_SRCS 
+    kcmkttsmgr.cpp 
++   kttsjobmgr.cpp
+    addtalker.cpp )
+ 
+ 
+ qt4_add_dbus_interfaces(kcm_kttsd_PART_SRCS ${KDE4_DBUS_INTERFACES_DIR}/org.kde.KSpeech.xml )
+ 
+-kde4_add_ui_files(kcm_kttsd_PART_SRCS kcmkttsmgrwidget.ui addtalkerwidget.ui )
++kde4_add_ui_files(kcm_kttsd_PART_SRCS kcmkttsmgrwidget.ui kttsjobmgr.ui addtalkerwidget.ui )
+ 
+ kde4_add_plugin(kcm_kttsd ${kcm_kttsd_PART_SRCS})
+ 
+--- a/kttsd/kcmkttsmgr/kcmkttsmgr.cpp
++++ b/kttsd/kcmkttsmgr/kcmkttsmgr.cpp
+@@ -66,6 +66,7 @@
+ #include "selecttalkerdlg.h"
+ #include "selectlanguagedlg.h"
+ #include "utils.h"
++#include "kttsjobmgr.h"
+ 
+ // Some constants.
+ // Defaults set when clicking Defaults button.
+@@ -222,7 +223,7 @@ KCMKttsMgr::KCMKttsMgr(QWidget *parent,
+ 
+     // Initialize some variables.
+     m_config = 0;
+-    m_jobMgrPart = 0;
++    m_jobMgrWidget = 0;
+     m_configDlg = 0;
+     m_changed = false;
+     m_suppressConfigChanged = false;
+@@ -591,6 +592,12 @@ void KCMKttsMgr::save()
+ 
+     m_config->sync();
+ 
++    // apply changes in the jobs page if it exists
++    if (m_jobMgrWidget)
++    {
++        m_jobMgrWidget->save();
++    }
++    
+     // If we automatically unchecked the Enable KTTSD checkbox, stop KTTSD.
+     if (enableKttsdWasToggled)
+         slotEnableKttsd_toggled(false);
+@@ -1115,16 +1122,16 @@ void KCMKttsMgr::slotAutoStartMgrCheckBo
+ void KCMKttsMgr::kttsdStarted()
+ {
+     // kDebug() << "KCMKttsMgr::kttsdStarted: Running";
+-    bool kttsdLoaded = (m_jobMgrPart != 0);
++    bool kttsdLoaded = (m_jobMgrWidget != 0);
+     // Load Job Manager Part library.
+     if (!kttsdLoaded)
+     {
+-        m_jobMgrPart = KParts::ComponentFactory::createPartInstanceFromLibrary<KParts::ReadOnlyPart>(
+-            "libkttsjobmgrpart", mainTab, this);
+-        if (m_jobMgrPart)
++        m_jobMgrWidget = new KttsJobMgr(this);
++        if (m_jobMgrWidget)
+         {
++	    connect(m_jobMgrWidget, SIGNAL(configChanged()), this, SLOT(configChanged()));
+             // Add the Job Manager part as a new tab.
+-            mainTab->addTab(m_jobMgrPart->widget(), i18n("Jobs"));
++            mainTab->addTab(m_jobMgrWidget, i18n("Jobs"));
+             kttsdLoaded = true;
+         }
+         else
+@@ -1180,11 +1187,11 @@ void KCMKttsMgr::slotServiceOwnerChanged
+ void KCMKttsMgr::kttsdExiting()
+ {
+     // kDebug() << "KCMKttsMgr::kttsdExiting: Running";
+-    if (m_jobMgrPart)
++    if (m_jobMgrWidget)
+     {
+         mainTab->removeTab(wpJobs);
+-        delete m_jobMgrPart;
+-        m_jobMgrPart = 0;
++        delete m_jobMgrWidget;
++        m_jobMgrWidget = 0;
+     }
+     enableKttsdCheckBox->setChecked(false);
+     disconnect( QDBusConnection::sessionBus().interface(), 0, this, 0 );
+--- a/kttsd/kcmkttsmgr/kcmkttsmgr.h
++++ b/kttsd/kcmkttsmgr/kcmkttsmgr.h
+@@ -47,6 +47,7 @@ class QTreeWidget;
+ class QTreeWidgetItem;
+ class KAboutData;
+ class KConfig;
++class KttsJobMgr;
+ 
+ class FilterItem
+ {
+@@ -277,7 +278,7 @@ class KCMKttsMgr :
+         /**
+         * KTTS Job Manager.
+         */
+-        KParts::ReadOnlyPart *m_jobMgrPart;
++        KttsJobMgr *m_jobMgrWidget;
+ 
+         /**
+         * Plugin configuration dialog.
+--- /dev/null
++++ b/kttsd/kcmkttsmgr/kttsjobmgr.cpp
+@@ -0,0 +1,271 @@
++/***************************************************** vim:set ts=4 sw=4 sts=4:
++  A KPart to display running jobs in KTTSD and permit user to stop, cancel, pause,
++  resume, change Talker, etc.
++  -------------------
++  Copyright : (C) 2004,2005 by Gary Cramblitt <garycramblitt@comcast.net>
++  Copyright : (C) 2009 by Jeremy Whiting <jpwhiting@kde.org>
++  -------------------
++
++  This program is free software; you can redistribute it and/or modify
++  it under the terms of the GNU General Public License as published by
++  the Free Software Foundation; either version 2 of the License, or
++  (at your option) any later version.
++
++  This program is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++  GNU General Public License for more details.
++
++  You should have received a copy of the GNU General Public License
++  along with this program; if not, write to the Free Software
++  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ ******************************************************************************/
++
++// KttsJobMgr includes.
++#include "kttsjobmgr.h"
++#include "kttsjobmgr.moc"
++#include "ui_kttsjobmgr.h"
++
++// QT includes.
++#include <QtCore/QObject>
++#include <QtGui/QLabel>
++#include <QtGui/QSplitter>
++#include <QtGui/QClipboard>
++#include <QtGui/QPushButton>
++#include <QtCore/QList>
++#include <QtGui/QTreeView>
++#include <QtCore/QMimeData>
++#include <QtDBus/QtDBus>
++
++// KDE includes.
++#include <kcomponentdata.h>
++#include <klocale.h>
++#include <kaboutdata.h>
++#include <kicon.h>
++#include <kdebug.h>
++#include <kencodingfiledialog.h>
++#include <kinputdialog.h>
++#include <ktextedit.h>
++#include <kvbox.h>
++#include <kdemacros.h>
++#include <kparts/genericfactory.h>
++#include <kspeech.h>
++
++// KTTS includes.
++#include "talkercode.h"
++#include "selecttalkerdlg.h"
++
++KttsJobMgr::KttsJobMgr(QWidget *parent) :
++    QWidget(parent)
++{
++    m_ui = new Ui::kttsjobmgr;
++    m_ui->setupUi(this);
++
++//DBusAbstractInterfacePrivate
++    m_kspeech = new OrgKdeKSpeechInterface("org.kde.kttsd", "/KSpeech", QDBusConnection::sessionBus());
++    m_kspeech->setParent(this);
++
++    // Establish ourself as a System Manager.
++    m_kspeech->setApplicationName("KCMKttsMgr");
++    m_kspeech->setIsSystemManager(true);
++
++    // All the ktts components use the same catalog.
++    KGlobal::locale()->insertCatalog("kttsd");
++
++    connect (m_ui->speedSlider, SIGNAL(valueChanged(int)), this, SIGNAL(configChanged()));
++    connect (m_ui->pitchSlider, SIGNAL(valueChanged(int)), this, SIGNAL(configChanged()));
++    connect (m_ui->volumeSlider, SIGNAL(valueChanged(int)), this, SIGNAL(configChanged()));
++    
++    connect (m_ui->moduleComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slot_moduleChanged(const QString &)));
++    connect (m_ui->languageComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slot_languageChanged(const QString &)));
++    connect (m_ui->voiceComboBox, SIGNAL(currentIndexChanged(int)), this, SIGNAL(configChanged()));
++
++    m_ui->stopButton->setIcon(KIcon("media-playback-stop"));
++    connect (m_ui->stopButton, SIGNAL(clicked()), this, SLOT(slot_stop()));
++    m_ui->cancelButton->setIcon(KIcon("edit-clear"));
++    connect (m_ui->cancelButton, SIGNAL(clicked()), this, SLOT(slot_cancel()));
++    m_ui->pauseButton->setIcon(KIcon("media-playback-pause"));
++    connect (m_ui->pauseButton, SIGNAL(clicked()), this, SLOT(slot_pause()));
++    m_ui->resumeButton->setIcon(KIcon("media-playback-start"));
++    connect (m_ui->resumeButton, SIGNAL(clicked()), this, SLOT(slot_resume()));
++
++    m_ui->speak_clipboard->setIcon(KIcon("klipper"));
++    connect (m_ui->speak_clipboard, SIGNAL(clicked()), this, SLOT(slot_speak_clipboard()));
++    m_ui->speak_file->setIcon(KIcon("document-open"));
++    connect (m_ui->speak_file, SIGNAL(clicked()), this, SLOT(slot_speak_file()));
++    m_ui->job_changetalker->setIcon(KIcon("translate"));
++    connect (m_ui->job_changetalker, SIGNAL(clicked()), this, SLOT(slot_job_change_talker()));
++    m_ui->job_changetalker->setVisible(false);
++
++    // Set the main widget for the part.
++
++    // Connect DBUS Signals emitted by KTTSD to our own slots.
++    connect(m_kspeech, SIGNAL(kttsdStarted()),
++        this, SLOT(kttsdStarted()));
++    connect(m_kspeech, SIGNAL(jobStateChanged(const QString&, int, int)),
++        this, SLOT(jobStateChanged(const QString&, int, int)));
++    connect(m_kspeech, SIGNAL(marker(const QString&, int, int, const QString&)),
++        this, SLOT(marker(const QString&, int, int, const QString&)));
++}
++
++KttsJobMgr::~KttsJobMgr()
++{
++    KGlobal::locale()->removeCatalog("kttsd");
++    delete m_ui;
++}
++
++/**
++* Slots connected to buttons.
++*/
++void KttsJobMgr::slot_stop()
++{
++    m_kspeech->stop();
++}
++
++void KttsJobMgr::slot_cancel()
++{
++    m_kspeech->cancel();
++}
++
++void KttsJobMgr::slot_pause()
++{
++    m_kspeech->pause();
++}
++
++void KttsJobMgr::slot_resume()
++{
++    m_kspeech->resume();
++}
++
++void KttsJobMgr::save()
++{
++    m_kspeech->setSpeed(m_ui->speedSlider->value());
++    m_kspeech->setPitch(m_ui->pitchSlider->value());
++    m_kspeech->setVolume(m_ui->volumeSlider->value());
++    m_kspeech->setVoiceType(m_ui->voiceComboBox->currentIndex() + 1);
++}
++
++void KttsJobMgr::load()
++{
++}
++
++void KttsJobMgr::slot_moduleChanged(const QString & module)
++{
++    kDebug() << "changing the output module to " << module;
++    m_kspeech->setOutputModule(module);
++    emit configChanged();
++}
++
++void KttsJobMgr::slot_languageChanged(const QString & language)
++{
++    kDebug() << "changing the language to " << language;
++    m_kspeech->setLanguage(language);
++    emit configChanged();
++}
++
++void KttsJobMgr::slot_job_change_talker()
++{
++    //QModelIndex index = m_ui->m_jobTableView->currentIndex();
++    //if (index.isValid())
++    //{
++    //    JobInfo job = m_jobListModel->getRow(index.row());
++    //    QString talkerID = job.talkerID;
++    //    QStringList talkerIDs = m_talkerCodesToTalkerIDs.values();
++    //    int ndx = talkerIDs.indexOf(talkerID);
++    //    QString talkerCode;
++    //    if (ndx >= 0)
++    //        talkerCode = m_talkerCodesToTalkerIDs.keys()[ndx];
++    //    QPointer<SelectTalkerDlg> dlg = new SelectTalkerDlg(widget(), "selecttalkerdialog", i18n("Select Talker"), talkerCode, true);
++    //    int dlgResult = dlg->exec();
++    //    if (dlgResult != KDialog::Accepted)
++    //        return;
++    //    talkerCode = dlg->getSelectedTalkerCode();
++    //    int jobNum = job.jobNum;
++    //    m_kspeech->changeJobTalker(jobNum, talkerCode);
++    //    refreshJob(jobNum);
++    //}
++}
++
++void KttsJobMgr::slot_speak_clipboard()
++{
++    // kDebug() << "KttsJobMgr::slot_speak_clipboard: running";
++
++    // Get the clipboard object.
++    QClipboard *cb = QApplication::clipboard();
++
++    // Copy text from the clipboard.
++    QString text;
++    KSpeech::SayOptions sayOptions = KSpeech::soNone;
++    const QMimeData* data = cb->mimeData();
++    if (data)
++    {
++        if (data->hasFormat("text/html"))
++        {
++            // if (m_kspeech->supportsMarkup(NULL, KSpeech::mtHtml))
++                text = data->html();
++                sayOptions = KSpeech::soHtml;
++        }
++        if (data->hasFormat("text/ssml"))
++        {
++            // if (m_kspeech->supportsMarkup(NULL, KSpeech::mtSsml))
++            {
++                QByteArray d = data->data("text/ssml");
++                text = QString(d);
++                sayOptions = KSpeech::soSsml;
++            }
++        }
++    }
++    if (text.isEmpty()) {
++        text = cb->text();
++        sayOptions = KSpeech::soPlainText;
++    }
++
++    // Speak it.
++    if ( !text.isEmpty() )
++    {
++        m_kspeech->say(text, sayOptions);
++        // int jobNum = m_kspeech->say(text, sayOptions);
++        // kDebug() << "KttsJobMgr::slot_speak_clipboard: started jobNum " << jobNum;
++    }
++}
++
++void KttsJobMgr::slot_speak_file()
++{
++    KEncodingFileDialog dlg;
++    KEncodingFileDialog::Result result = dlg.getOpenFileNameAndEncoding();
++    if (result.fileNames.count() == 1)
++    {
++        // kDebug() << "KttsJobMgr::slot_speak_file: calling setFile with filename " <<
++        //     result.fileNames[0] << " and encoding " << result.encoding << endl;
++        m_kspeech->sayFile(result.fileNames[0], result.encoding);
++    }
++}
++
++/**
++* Return the Talker ID corresponding to a Talker Code, retrieving from cached list if present.
++* @param talkerCode    Talker Code.
++* @return              Talker ID.
++*/
++QString KttsJobMgr::cachedTalkerCodeToTalkerID(const QString& talkerCode)
++{
++    // If in the cache, return that.
++    if (m_talkerCodesToTalkerIDs.contains(talkerCode))
++        return m_talkerCodesToTalkerIDs[talkerCode];
++    else
++    {
++        // Otherwise, retrieve Talker ID from KTTSD and cache it.
++        QString talkerID = m_kspeech->talkerToTalkerId(talkerCode);
++        m_talkerCodesToTalkerIDs[talkerCode] = talkerID;
++        // kDebug() << "KttsJobMgr::cachedTalkerCodeToTalkerID: talkerCode = " << talkerCode << " talkerID = " << talkerID;
++        return talkerID;
++    }
++}
++
++/** Slots connected to DBUS Signals emitted by KTTSD. */
++
++/**
++* This signal is emitted when KTTSD starts or restarts after a call to reinit.
++*/
++Q_SCRIPTABLE void KttsJobMgr::kttsdStarted()
++{
++}
+--- /dev/null
++++ b/kttsd/kcmkttsmgr/kttsjobmgr.h
+@@ -0,0 +1,112 @@
++/***************************************************** vim:set ts=4 sw=4 sts=4:
++  A KPart to display running jobs in KTTSD and permit user to stop, rewind,
++  advance, change Talker, etc. 
++  -------------------
++  Copyright : (C) 2004 by Gary Cramblitt <garycramblitt@comcast.net>
++  Copyright : (C) 2009 by Jeremy Whiting <jpwhiting@kde.org>
++  -------------------
++
++  This program is free software; you can redistribute it and/or modify
++  it under the terms of the GNU General Public License as published by
++  the Free Software Foundation; either version 2 of the License, or
++  (at your option) any later version.
++
++  This program is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++  GNU General Public License for more details.
++
++  You should have received a copy of the GNU General Public License
++  along with this program; if not, write to the Free Software
++  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ ******************************************************************************/
++
++#ifndef KTTSJOBMGR_H
++#define KTTSJOBMGR_H
++
++// Qt includes
++#include <QWidget>
++
++// KDE includes.
++
++// KTTS includes.
++#include "kspeechinterface.h"
++
++class KAboutData;
++class KPushButton;
++class KttsJobMgrBrowserExtension;
++class JobInfo;
++class JobInfoListModel;
++
++namespace Ui
++{
++    class kttsjobmgr;
++}
++
++class KttsJobMgr:
++  public QWidget
++{
++    Q_OBJECT
++public:
++    KttsJobMgr(QWidget *parent = 0);
++    virtual ~KttsJobMgr();
++
++    /** apply current settings, i.e. speech-dispatcher what to do */
++    void save();
++    /** get the current settings from speech-dispatcher */
++    void load();
++    
++signals:
++    void configChanged();
++
++    /** Slots connected to DBUS Signals emitted by KTTSD. */
++protected Q_SLOTS:
++    /**
++    * This signal is emitted when KTTSD starts or restarts after a call to reinit.
++    */
++    Q_SCRIPTABLE void kttsdStarted();
++
++private slots:
++    /**
++    * Slots connected to buttons.
++    */
++    void slot_stop();
++    void slot_cancel();
++    void slot_pause();
++    void slot_resume();
++    void slot_job_change_talker();
++    void slot_speak_clipboard();
++    void slot_speak_file();
++
++    /**
++    * Slots for comboboxes.
++    */
++    
++    void slot_moduleChanged(const QString & module);
++    void slot_languageChanged(const QString & language);
++   
++private:
++    /**
++    * DBUS KSpeech Interface.
++    */
++    org::kde::KSpeech* m_kspeech;
++
++    /**
++    * Return the Talker ID corresponding to a Talker Code, retrieving from cached list if present.
++    * @param talkerCode    Talker Code.
++    * @return              Talker ID.
++    */
++    QString cachedTalkerCodeToTalkerID(const QString& talkerCode);
++
++    /**
++    * Job ListView.
++    */
++    Ui::kttsjobmgr * m_ui;
++
++    /**
++    * Cache mapping Talker Codes to Talker IDs.
++    */
++    QMap<QString,QString> m_talkerCodesToTalkerIDs;
++};
++
++#endif    // KTTSJOBMGR_H
+--- /dev/null
++++ b/kttsd/kcmkttsmgr/kttsjobmgr.ui
+@@ -0,0 +1,423 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ui version="4.0">
++ <class>kttsjobmgr</class>
++ <widget class="QWidget" name="kttsjobmgr">
++  <property name="geometry">
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>480</width>
++    <height>288</height>
++   </rect>
++  </property>
++  <property name="windowTitle">
++   <string>Jobs</string>
++  </property>
++  <layout class="QVBoxLayout" name="verticalLayout">
++   <item>
++    <widget class="QGroupBox" name="groupBox_2">
++     <property name="title">
++      <string>Speech Control</string>
++     </property>
++     <layout class="QGridLayout" name="gridLayout_3">
++      <item row="3" column="0">
++       <widget class="QLabel" name="label_3">
++        <property name="text">
++         <string>&amp;Speed</string>
++        </property>
++        <property name="buddy">
++         <cstring>speedSlider</cstring>
++        </property>
++       </widget>
++      </item>
++      <item row="3" column="1">
++       <widget class="QSlider" name="speedSlider">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++        <property name="singleStep">
++         <number>10</number>
++        </property>
++        <property name="pageStep">
++         <number>20</number>
++        </property>
++        <property name="orientation">
++         <enum>Qt::Horizontal</enum>
++        </property>
++        <property name="tickPosition">
++         <enum>QSlider::TicksAbove</enum>
++        </property>
++       </widget>
++      </item>
++      <item row="4" column="0">
++       <widget class="QLabel" name="label_4">
++        <property name="text">
++         <string>&amp;Pitch</string>
++        </property>
++        <property name="buddy">
++         <cstring>pitchSlider</cstring>
++        </property>
++       </widget>
++      </item>
++      <item row="4" column="1">
++       <widget class="QSlider" name="pitchSlider">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++        <property name="singleStep">
++         <number>10</number>
++        </property>
++        <property name="pageStep">
++         <number>20</number>
++        </property>
++        <property name="orientation">
++         <enum>Qt::Horizontal</enum>
++        </property>
++        <property name="tickPosition">
++         <enum>QSlider::TicksAbove</enum>
++        </property>
++       </widget>
++      </item>
++      <item row="5" column="0">
++       <widget class="QLabel" name="label_5">
++        <property name="text">
++         <string>&amp;Volume</string>
++        </property>
++        <property name="buddy">
++         <cstring>volumeSlider</cstring>
++        </property>
++       </widget>
++      </item>
++      <item row="5" column="1">
++       <widget class="QSlider" name="volumeSlider">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++        <property name="singleStep">
++         <number>10</number>
++        </property>
++        <property name="pageStep">
++         <number>20</number>
++        </property>
++        <property name="orientation">
++         <enum>Qt::Horizontal</enum>
++        </property>
++        <property name="tickPosition">
++         <enum>QSlider::TicksAbove</enum>
++        </property>
++       </widget>
++      </item>
++      <item row="6" column="0" colspan="3">
++       <layout class="QHBoxLayout" name="horizontalLayout_4">
++        <item>
++         <widget class="KPushButton" name="stopButton">
++          <property name="enabled">
++           <bool>true</bool>
++          </property>
++          <property name="text">
++           <string>Stop</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <widget class="KPushButton" name="cancelButton">
++          <property name="enabled">
++           <bool>true</bool>
++          </property>
++          <property name="whatsThis">
++           <string>&lt;p&gt;Deletes the job.  If it is currently speaking, it stops speaking.  The next speakable job in the list begins speaking.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>Cancel</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <widget class="KPushButton" name="pauseButton">
++          <property name="enabled">
++           <bool>true</bool>
++          </property>
++          <property name="whatsThis">
++           <string>&lt;p&gt;Changes a job to Paused state.  If currently speaking, the job stops speaking. Paused jobs prevent jobs that follow them from speaking, so either click &lt;b&gt;Resume&lt;/b&gt; to make the job speakable, or click &lt;b&gt;Later&lt;/b&gt; to move it down in the list.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>Pause</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <widget class="KPushButton" name="resumeButton">
++          <property name="enabled">
++           <bool>true</bool>
++          </property>
++          <property name="whatsThis">
++           <string>&lt;p&gt;Resumes a paused job or changes a Queued job to Waiting.  If the job is the top speakable job in the list, it begins speaking.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>Resume</string>
++          </property>
++         </widget>
++        </item>
++       </layout>
++      </item>
++      <item row="7" column="0" colspan="3">
++       <layout class="QHBoxLayout" name="horizontalLayout_3">
++        <item>
++         <widget class="KPushButton" name="speak_clipboard">
++          <property name="whatsThis">
++           <string>&lt;p&gt;Queues the current contents of the clipboard for speaking and sets its state to Waiting.  If the job is the topmost in the list, it begins speaking.  The job will be spoken by the topmost Talker in the &lt;b&gt;Talkers&lt;/b&gt; tab.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>&amp;Speak Clipboard</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <widget class="KPushButton" name="speak_file">
++          <property name="whatsThis">
++           <string>&lt;p&gt;Prompts you for a file name and queues the contents of the file for speaking.  You must click the &lt;b&gt;Resume&lt;/b&gt; button before the job will be speakable.  The job will be spoken by the topmost Talker in the &lt;b&gt;Talkers&lt;/b&gt; tab.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>Spea&amp;k File</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <widget class="KPushButton" name="job_changetalker">
++          <property name="whatsThis">
++           <string>&lt;p&gt;Prompts you with a list of your configured Talkers from the &lt;b&gt;Talkers&lt;/b&gt; tab.  The job will be spoken using the selected Talker.&lt;/p&gt;</string>
++          </property>
++          <property name="text">
++           <string>Change Talker</string>
++          </property>
++         </widget>
++        </item>
++       </layout>
++      </item>
++      <item row="3" column="2">
++       <widget class="KIntSpinBox" name="speedSpinbox">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++       </widget>
++      </item>
++      <item row="4" column="2">
++       <widget class="KIntSpinBox" name="pitchSpinbox">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++       </widget>
++      </item>
++      <item row="5" column="2">
++       <widget class="KIntSpinBox" name="volumeSpinbox">
++        <property name="minimum">
++         <number>-100</number>
++        </property>
++        <property name="maximum">
++         <number>100</number>
++        </property>
++       </widget>
++      </item>
++      <item row="0" column="1" colspan="2">
++       <widget class="QComboBox" name="moduleComboBox"/>
++      </item>
++      <item row="2" column="1" colspan="2">
++       <widget class="QComboBox" name="voiceComboBox">
++        <item>
++         <property name="text">
++          <string>Male 1</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Male 2</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Male 3</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Female 1</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Female 2</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Female 3</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Male Child</string>
++         </property>
++        </item>
++        <item>
++         <property name="text">
++          <string>Female Child</string>
++         </property>
++        </item>
++       </widget>
++      </item>
++      <item row="0" column="0">
++       <widget class="QLabel" name="label">
++        <property name="text">
++         <string>Output Module</string>
++        </property>
++       </widget>
++      </item>
++      <item row="2" column="0">
++       <widget class="QLabel" name="label_2">
++        <property name="text">
++         <string>Voice</string>
++        </property>
++       </widget>
++      </item>
++      <item row="1" column="1" colspan="2">
++       <widget class="QComboBox" name="languageComboBox"/>
++      </item>
++      <item row="1" column="0">
++       <widget class="QLabel" name="label_6">
++        <property name="text">
++         <string>Language</string>
++        </property>
++       </widget>
++      </item>
++     </layout>
++    </widget>
++   </item>
++  </layout>
++ </widget>
++ <customwidgets>
++  <customwidget>
++   <class>KIntSpinBox</class>
++   <extends>QSpinBox</extends>
++   <header>knuminput.h</header>
++  </customwidget>
++  <customwidget>
++   <class>KPushButton</class>
++   <extends>QPushButton</extends>
++   <header>kpushbutton.h</header>
++  </customwidget>
++ </customwidgets>
++ <resources/>
++ <connections>
++  <connection>
++   <sender>pitchSlider</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>pitchSpinbox</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>263</x>
++     <y>84</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>495</x>
++     <y>84</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>pitchSpinbox</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>pitchSlider</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>495</x>
++     <y>84</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>263</x>
++     <y>84</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>speedSlider</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>speedSpinbox</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>263</x>
++     <y>52</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>495</x>
++     <y>52</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>speedSpinbox</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>speedSlider</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>495</x>
++     <y>52</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>263</x>
++     <y>52</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>volumeSlider</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>volumeSpinbox</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>263</x>
++     <y>116</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>495</x>
++     <y>116</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>volumeSpinbox</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>volumeSlider</receiver>
++   <slot>setValue(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>495</x>
++     <y>116</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>263</x>
++     <y>116</y>
++    </hint>
++   </hints>
++  </connection>
++ </connections>
++</ui>
+--- a/kttsd/kttsd/speaker.cpp
++++ b/kttsd/kttsd/speaker.cpp
+@@ -38,6 +38,7 @@
+ #include <QtDBus/QtDBus>
+ 
+ // KDE includes.
++#include <kconfiggroup.h>
+ #include <kdebug.h>
+ #include <klocale.h>
+ #include <kparts/componentfactory.h>
+@@ -101,13 +102,16 @@ class SpeakerPrivate
+ {
+     SpeakerPrivate() :
+         connection(NULL),
+-        filterMgr(NULL)
++        filterMgr(NULL),
++        config(NULL)
+     {
+         if (!ConnectToSpeechd())
+             kError() << "could not get a connection to speech-dispatcher"<< endl;
+ 
+         filterMgr = new FilterMgr();
+         filterMgr->init();
++        
++        config = new KConfig("kttsdrc");
+     }
+     
+     ~SpeakerPrivate()
+@@ -123,6 +127,7 @@ class SpeakerPrivate
+         //allJobs.clear();
+ 
+         delete filterMgr;
++        delete config;
+ 
+         foreach (AppData* applicationData, appData)
+             delete applicationData;
+@@ -184,6 +189,12 @@ protected:
+     * the filter manager
+     */
+     FilterMgr * filterMgr;
++
++    /**
++    * Object holding all the configuration
++    */
++    KConfig *config;
++
+ };
+ 
+ /* Public Methods ==========================================================*/

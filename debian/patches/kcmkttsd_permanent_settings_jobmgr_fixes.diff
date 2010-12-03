@@ -1,0 +1,433 @@
+From: Modestas Vainius <modax@debian.org>
+Subject: Properly support permanent storage of kttsd talker settings, jobmgr fixes.
+Origin: vendor
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=599825
+Last-Update: 2010-12-04
+Forwarded: no
+
+This patch builds on top of the upstream jobmgr patch (commits 1072198,
+1138400) and:
+
+1) adds support for permanent storage (to config file) of talker settings in
+both KTTS daemon and its configuration GUI. This includes saving and loading of
+the settings;
+2) brings job manager GUI to a usable state rather than half-ported and hardly
+working bunch of GUI elements. Not entirely bug-free, but usable (i.e. should
+be RC bug free).
+
+--- a/kttsd/kcmkttsmgr/kcmkttsmgr.cpp
++++ b/kttsd/kcmkttsmgr/kcmkttsmgr.cpp
+@@ -498,6 +498,10 @@ void KCMKttsMgr::load()
+ 
+     m_changed = false;
+     m_suppressConfigChanged = false;
++
++    // load the first talker into job manager
++    if (m_jobMgrWidget && m_talkerListModel.rowCount() > 0)
++        m_jobMgrWidget->load(m_talkerListModel.getRow(0));
+ }
+ 
+ /**
+@@ -592,12 +596,16 @@ void KCMKttsMgr::save()
+ 
+     m_config->sync();
+ 
+-    // apply changes in the jobs page if it exists
++    // schedule apply of the changes in the jobs page once kttsd restarts
+     if (m_jobMgrWidget)
+     {
+-        m_jobMgrWidget->save();
++        m_jobMgrWidget->setSavePending(true);
++        //m_jobMgrWidget->save();
+     }
+     
++    // Restart kttsd in order to pick up talker changes from config file
++    m_kspeech->reinit();
++
+     // If we automatically unchecked the Enable KTTSD checkbox, stop KTTSD.
+     if (enableKttsdWasToggled)
+         slotEnableKttsd_toggled(false);
+@@ -1033,6 +1041,9 @@ void KCMKttsMgr::updateTalkerButtons(){
+         configureTalkerButton->setEnabled(true);
+         higherTalkerPriorityButton->setEnabled(modelIndex.row() != 0);
+         lowerTalkerPriorityButton->setEnabled(modelIndex.row() < (m_talkerListModel.rowCount() - 1));
++        // Update output module and language in jobMgrWidget
++        if (m_jobMgrWidget)
++            m_jobMgrWidget->load(m_talkerListModel.getRow(modelIndex.row()));
+     } else {
+         removeTalkerButton->setEnabled(false);
+         configureTalkerButton->setEnabled(false);
+@@ -1140,6 +1151,13 @@ void KCMKttsMgr::kttsdStarted()
+     // Check/Uncheck the Enable KTTSD check box.
+     if (kttsdLoaded)
+     {
++        bool reinit = false;
++        if (m_kspeech) { // already connected, reinit called
++            // disconnect first
++            disconnect( QDBusConnection::sessionBus().interface(), 0, this, 0 );
++            delete m_kspeech;
++            reinit = true;
++        }
+         enableKttsdCheckBox->setChecked(true);
+         m_kspeech = new OrgKdeKSpeechInterface("org.kde.kttsd", "/KSpeech", QDBusConnection::sessionBus());
+         m_kspeech->setParent(this);
+@@ -1157,6 +1175,8 @@ void KCMKttsMgr::kttsdStarted()
+ 
+         kttsdVersion->setText(i18n("KTTSD Version: %1", m_kspeech->version()));
+ 
++         if (!reinit)
++            m_jobMgrWidget->load(TalkerCode());
+     } else {
+         enableKttsdCheckBox->setChecked(false);
+         delete m_kspeech;
+--- a/kttsd/kcmkttsmgr/kttsjobmgr.cpp
++++ b/kttsd/kcmkttsmgr/kttsjobmgr.cpp
+@@ -56,7 +56,8 @@
+ #include "selecttalkerdlg.h"
+ 
+ KttsJobMgr::KttsJobMgr(QWidget *parent) :
+-    QWidget(parent)
++    QWidget(parent),
++    m_savePending(false)
+ {
+     m_ui = new Ui::kttsjobmgr;
+     m_ui->setupUi(this);
+@@ -77,7 +78,7 @@ KttsJobMgr::KttsJobMgr(QWidget *parent)
+     connect (m_ui->volumeSlider, SIGNAL(valueChanged(int)), this, SIGNAL(configChanged()));
+     
+     connect (m_ui->moduleComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slot_moduleChanged(const QString &)));
+-    connect (m_ui->languageComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slot_languageChanged(const QString &)));
++    connect (m_ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slot_languageChanged(int)));
+     connect (m_ui->voiceComboBox, SIGNAL(currentIndexChanged(int)), this, SIGNAL(configChanged()));
+ 
+     m_ui->stopButton->setIcon(KIcon("media-playback-stop"));
+@@ -139,25 +140,104 @@ void KttsJobMgr::slot_resume()
+ 
+ void KttsJobMgr::save()
+ {
++    if (m_ui->moduleComboBox->currentIndex() > -1)
++        m_kspeech->setOutputModule(m_ui->moduleComboBox->currentText());
++    if (m_ui->languageComboBox->currentIndex() > -1)
++    {
++        int langIndex = m_ui->languageComboBox->currentIndex();
++        m_kspeech->setLanguage(m_ui->languageComboBox->itemData(langIndex).toString());
++    }
+     m_kspeech->setSpeed(m_ui->speedSlider->value());
+     m_kspeech->setPitch(m_ui->pitchSlider->value());
+     m_kspeech->setVolume(m_ui->volumeSlider->value());
+     m_kspeech->setVoiceType(m_ui->voiceComboBox->currentIndex() + 1);
++
++    m_savePending = false;
++}
++
++void KttsJobMgr::load(const TalkerCode & tc, bool complete)
++{
++    m_ui->moduleComboBox->clear();
++    bool wasSet = false;
++    if (!tc.outputModule().isEmpty())
++    {
++        QStringList modules = m_kspeech->outputModules();
++        int i = 0;
++        foreach (const QString module, modules)
++        {
++            m_ui->moduleComboBox->addItem(module);
++            if (module == tc.outputModule())
++            {
++                m_ui->moduleComboBox->setCurrentIndex(i);
++                wasSet = true;
++            }
++            i++;
++        }
++    }
++    if (wasSet)
++    {
++        if (complete) {
++            loadLanguages(tc.language());
++            m_ui->voiceComboBox->setCurrentIndex(tc.voiceType()-1);
++            m_ui->speedSlider->setValue(tc.rate());
++            m_ui->pitchSlider->setValue(tc.pitch());
++            m_ui->volumeSlider->setValue(tc.volume());
++        }
++    }
++    else
++    {
++        m_ui->moduleComboBox->setCurrentIndex(-1);
++    }
+ }
+ 
+-void KttsJobMgr::load()
++void KttsJobMgr::loadLanguages(const QString & selectedLanguage)
+ {
++    QString module = m_ui->moduleComboBox->currentText();
++    m_ui->languageComboBox->clear();
++    if (!module.isEmpty())
++    {
++        int i = 0;
++        bool wasSet = false;
++        QStringList languages = m_kspeech->languagesByModule(module);
++        foreach (const QString language, languages)
++        {
++            QString langName = TalkerCode::languageCodeToLanguage(language);
++            QString langLabel = (langName.isEmpty()) ? language :
++               QString("%1 (%2)").arg(langName).arg(language);
++            m_ui->languageComboBox->addItem(langLabel, language);
++            if (language == selectedLanguage)
++            {
++                m_ui->languageComboBox->setCurrentIndex(i);
++                wasSet = true;
++            }
++            i++;
++        }
++        if (!wasSet) m_ui->languageComboBox->setCurrentIndex(-1);
++    }
+ }
+ 
+ void KttsJobMgr::slot_moduleChanged(const QString & module)
+ {
++    if (module.isEmpty())
++        return;
++
+     kDebug() << "changing the output module to " << module;
+     m_kspeech->setOutputModule(module);
++
++    QString fullLanguageCode = KGlobal::locale()->defaultLanguage();
++    QString languageCode, countryCode;
++    TalkerCode::splitFullLanguageCode(fullLanguageCode, languageCode, countryCode);
++    loadLanguages(languageCode);
++
+     emit configChanged();
+ }
+ 
+-void KttsJobMgr::slot_languageChanged(const QString & language)
++void KttsJobMgr::slot_languageChanged(int index)
+ {
++    if (index < 0)
++        return;
++
++    QString language = m_ui->languageComboBox->itemData(index).toString();
+     kDebug() << "changing the language to " << language;
+     m_kspeech->setLanguage(language);
+     emit configChanged();
+@@ -261,6 +341,16 @@ QString KttsJobMgr::cachedTalkerCodeToTa
+     }
+ }
+ 
++void KttsJobMgr::setSavePending(bool value)
++{
++    m_savePending = value;
++}
++
++bool KttsJobMgr::isSavePending()
++{
++    return m_savePending;
++}
++
+ /** Slots connected to DBUS Signals emitted by KTTSD. */
+ 
+ /**
+@@ -268,4 +358,6 @@ QString KttsJobMgr::cachedTalkerCodeToTa
+ */
+ Q_SCRIPTABLE void KttsJobMgr::kttsdStarted()
+ {
++    if (isSavePending())
++        save();
+ }
+--- a/kttsd/kcmkttsmgr/kttsjobmgr.h
++++ b/kttsd/kcmkttsmgr/kttsjobmgr.h
+@@ -37,6 +37,7 @@ class KPushButton;
+ class KttsJobMgrBrowserExtension;
+ class JobInfo;
+ class JobInfoListModel;
++class TalkerCode;
+ 
+ namespace Ui
+ {
+@@ -54,7 +55,10 @@ public:
+     /** apply current settings, i.e. speech-dispatcher what to do */
+     void save();
+     /** get the current settings from speech-dispatcher */
+-    void load();
++    void load(const TalkerCode & tc, bool complete = true);
++
++    void setSavePending(bool value);
++    bool isSavePending();
+     
+ signals:
+     void configChanged();
+@@ -83,7 +87,7 @@ private slots:
+     */
+     
+     void slot_moduleChanged(const QString & module);
+-    void slot_languageChanged(const QString & language);
++    void slot_languageChanged(int index);
+    
+ private:
+     /**
+@@ -98,6 +102,8 @@ private:
+     */
+     QString cachedTalkerCodeToTalkerID(const QString& talkerCode);
+ 
++    void loadLanguages(const QString & selectedLanguage);
++
+     /**
+     * Job ListView.
+     */
+@@ -107,6 +113,8 @@ private:
+     * Cache mapping Talker Codes to Talker IDs.
+     */
+     QMap<QString,QString> m_talkerCodesToTalkerIDs;
++
++    bool m_savePending;
+ };
+ 
+ #endif    // KTTSJOBMGR_H
+--- a/kttsd/kttsd/kspeech.cpp
++++ b/kttsd/kttsd/kspeech.cpp
+@@ -436,6 +436,7 @@ void KSpeech::init()
+     new KSpeechAdaptor(this);
+     if (ready()) {
+         QDBusConnection::sessionBus().registerObject("/KSpeech", this, QDBusConnection::ExportAdaptors);
++        emit kttsdStarted();
+     }
+ }
+ 
+@@ -450,6 +451,7 @@ void KSpeech::reinit()
+     QDBusConnection::sessionBus().unregisterObject("/KSpeech");
+     if (ready()) {
+         QDBusConnection::sessionBus().registerObject("/KSpeech", this, QDBusConnection::ExportAdaptors);
++        emit kttsdStarted();
+     }
+ }
+ 
+@@ -477,7 +479,6 @@ bool KSpeech::ready()
+     if (!initializeSpeaker())
+         return false;
+     announceEvent("ready", "kttsdStarted");
+-    emit kttsdStarted();
+     return true;
+ }
+ 
+--- a/kttsd/kttsd/speaker.cpp
++++ b/kttsd/kttsd/speaker.cpp
+@@ -53,7 +53,7 @@
+ #include "talkercode.h"
+ 
+ // KTTSD includes.
+-//#include "talkermgr.h"
++#include "talkermgr.h"
+ #include "ssmlconvert.h"
+ 
+ 
+@@ -103,7 +103,8 @@ class SpeakerPrivate
+     SpeakerPrivate() :
+         connection(NULL),
+         filterMgr(NULL),
+-        config(NULL)
++        config(NULL),
++        currentTalker(QString())
+     {
+         if (!ConnectToSpeechd())
+             kError() << "could not get a connection to speech-dispatcher"<< endl;
+@@ -112,6 +113,8 @@ class SpeakerPrivate
+         filterMgr->init();
+         
+         config = new KConfig("kttsdrc");
++
++        TalkerMgr::Instance()->loadTalkers(config);
+     }
+     
+     ~SpeakerPrivate()
+@@ -195,6 +198,8 @@ protected:
+     */
+     KConfig *config;
+ 
++    QString currentTalker;
++
+ };
+ 
+ /* Public Methods ==========================================================*/
+@@ -256,6 +261,14 @@ void Speaker::init()
+     delete d->filterMgr;
+     d->filterMgr = new FilterMgr();
+     d->filterMgr->init();
++
++    if (d->config) delete d->config;
++    d->config = new KConfig("kttsdrc");
++    TalkerMgr::Instance()->loadTalkers(d->config);
++
++    QString defTalker = TalkerMgr::Instance()->userDefaultTalker();
++    if (!defTalker.isEmpty())
++        activateTalker(defTalker);
+ }
+ 
+ AppData* Speaker::getAppData(const QString& appId) const
+@@ -330,6 +343,13 @@ int Speaker::say(const QString& appId, c
+     //kDebug() << "Running: Speaker::say appId = " << appId << " text = " << text;
+     //QString talker = appData->defaultTalker();
+ 
++    // Activate another talker if requested
++    if (!appData->defaultTalker().isEmpty() &&
++        appData->defaultTalker() != d->currentTalker)
++    {
++        activateTalker(appData->defaultTalker());
++    }
++
+     SPDPriority spdpriority = SPD_PROGRESS; // default to least priority
+     switch (priority)
+     {
+@@ -406,7 +426,7 @@ int Speaker::say(const QString& appId, c
+     }
+ 
+     //// Note: Set state last so job is fully populated when jobStateChanged signal is emitted.
+-    appData->jobList()->append(jobNum);
++    //appData->jobList()->append(jobNum);
+     return jobNum;
+ }
+ 
+@@ -449,6 +469,19 @@ bool Speaker::isSpeaking()
+     return true; // TODO: ask speech-dispatcher somehow?
+ }
+ 
++void Speaker::activateTalker(const QString & talker)
++{
++    TalkerCode tc(talker);
++    setOutputModule(tc.outputModule());
++    setLanguage(tc.language());
++    setVoiceType(tc.voiceType());
++    setSpeed(tc.rate());
++    setPitch(tc.pitch());
++    setVolume(tc.volume());
++
++    d->currentTalker = talker;
++}
++
+ int Speaker::getCurrentJobNum()
+ { 
+     return 0;// TODO: ask speech dispatcher if it's needed...
+--- a/kttsd/kttsd/speaker.h
++++ b/kttsd/kttsd/speaker.h
+@@ -380,6 +380,8 @@ public:
+     void setLanguage(const QString & language);
+     void setVoiceType(int voiceType);
+ 
++    void activateTalker(const QString & talker);
++
+ signals:
+     /**
+     * Emitted when a marker is processed.
+--- a/kttsd/kttsd/talkermgr.cpp
++++ b/kttsd/kttsd/talkermgr.cpp
+@@ -239,12 +239,7 @@ void TalkerMgr::loadTalkers(KConfig* c)
+  */
+ QStringList TalkerMgr::getTalkers()
+ {
+-    QStringList talkerList;
+-    //for (int ndx = 0; ndx < int(m_loadedPlugIns.count()); ++ndx)
+-    //{
+-    //    talkerList.append(m_loadedTalkerCodes[ndx].getTalkerCode());
+-    //}
+-    return talkerList;
++    return m_loadedTalkerIds;
+ }
+ 
+ /**

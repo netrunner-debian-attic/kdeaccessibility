@@ -1,6 +1,16 @@
 kdeaccessibility (4:4.4.5-2) UNRELEASED; urgency=low
 
   * Point debian/control Vcs fields to the new Git repository.
+  * Add a series of patches to fix kttsd configuration framework which is
+    completely broken. kttsd 4.4.x release is as a bunch of code which is in
+    the middle of porting to speech-dispatcher from the old infrastructure.
+    While the basics in the KTTS daemon work, the daemon is not configurable
+    and hence unusable on the desktop. This series of patches attempts to
+    address this RC shortcoming in order to make kttsd shippable in Debian
+    stable (Closes: #599825). See patch headers for more information:
+    - backport_kttsd_1072198_1138400.diff
+    - kcmkttsd_permanent_settings_jobmgr_fixes.diff
+    - kcmkttsd_support_talker_editing.diff
 
  -- Modestas Vainius <modax@debian.org>  Mon, 26 Jul 2010 23:24:32 +0300
 
