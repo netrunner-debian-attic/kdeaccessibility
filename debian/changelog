@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.4.5-2) UNRELEASED; urgency=low
+kdeaccessibility (4:4.4.5-2) unstable; urgency=low
 
   * Point debian/control Vcs fields to the new Git repository.
   * Add a series of patches to fix kttsd configuration framework which is
@@ -12,7 +12,7 @@ kdeaccessibility (4:4.4.5-2) UNRELEASED; urgency=low
     - kcmkttsd_permanent_settings_jobmgr_fixes.diff
     - kcmkttsd_support_talker_editing.diff
 
- -- Modestas Vainius <modax@debian.org>  Mon, 26 Jul 2010 23:24:32 +0300
+ -- Modestas Vainius <modax@debian.org>  Sat, 04 Dec 2010 01:31:31 +0200
 
 kdeaccessibility (4:4.4.5-1) unstable; urgency=low
 
