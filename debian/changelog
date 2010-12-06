@@ -1,3 +1,8 @@
+kdeaccessibility (4:4.4.5-3) UNRELEASED; urgency=low
+
+
+ -- Modestas Vainius <modax@debian.org>  Tue, 07 Dec 2010 00:14:46 +0200
+
 kdeaccessibility (4:4.4.5-2) unstable; urgency=low
 
   * Point debian/control Vcs fields to the new Git repository.
