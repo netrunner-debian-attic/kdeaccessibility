@@ -431,3 +431,13 @@ be RC bug free).
  }
  
  /**
+@@ -340,7 +335,8 @@ QString TalkerMgr::talkerCodeToTalkerId(
+  */
+ QString TalkerMgr::userDefaultTalker() const
+ {
+-    return m_loadedTalkerCodes[0].getTalkerCode();
++    return (m_loadedTalkerCodes.isEmpty()) ? QString() :
++        m_loadedTalkerCodes[0].getTalkerCode();
+ }
+ 
+ /**

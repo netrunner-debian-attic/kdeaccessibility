@@ -1,5 +1,9 @@
 kdeaccessibility (4:4.4.5-3) UNRELEASED; urgency=low
 
+  * Fix kttsd crash on startup when there is no configured talkers. Merge the
+    fix to the kcmkttsd_permanent_settings_jobmgr_fixes.diff patch as it
+    triggers this crash by using broken piece of upstream code.
+    (Closes: #606166)
 
  -- Modestas Vainius <modax@debian.org>  Tue, 07 Dec 2010 00:14:46 +0200
 
