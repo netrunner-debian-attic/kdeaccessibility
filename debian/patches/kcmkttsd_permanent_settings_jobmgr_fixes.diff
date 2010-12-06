@@ -124,20 +124,18 @@ be RC bug free).
 +{
 +    m_ui->moduleComboBox->clear();
 +    bool wasSet = false;
-+    if (!tc.outputModule().isEmpty())
++    QStringList modules = m_kspeech->outputModules();
++    int i = 0;
++
++    foreach (const QString module, modules)
 +    {
-+        QStringList modules = m_kspeech->outputModules();
-+        int i = 0;
-+        foreach (const QString module, modules)
++        m_ui->moduleComboBox->addItem(module);
++        if (module == tc.outputModule())
 +        {
-+            m_ui->moduleComboBox->addItem(module);
-+            if (module == tc.outputModule())
-+            {
-+                m_ui->moduleComboBox->setCurrentIndex(i);
-+                wasSet = true;
-+            }
-+            i++;
++            m_ui->moduleComboBox->setCurrentIndex(i);
++            wasSet = true;
 +        }
++        i++;
 +    }
 +    if (wasSet)
 +    {
@@ -184,8 +182,10 @@ be RC bug free).
  
  void KttsJobMgr::slot_moduleChanged(const QString & module)
  {
-+    if (module.isEmpty())
++    if (module.isEmpty()) {
++        m_ui->languageComboBox->clear();
 +        return;
++    }
 +
      kDebug() << "changing the output module to " << module;
      m_kspeech->setOutputModule(module);

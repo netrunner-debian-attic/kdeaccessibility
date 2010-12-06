@@ -4,6 +4,8 @@ kdeaccessibility (4:4.4.5-3) UNRELEASED; urgency=low
     fix to the kcmkttsd_permanent_settings_jobmgr_fixes.diff patch as it
     triggers this crash by using broken piece of upstream code.
     (Closes: #606166)
+  * Fill list of available output modules in KTTS job manager even when default
+    module is unknown (kcmkttsd_permanent_settings_jobmgr_fixes.diff updated).
 
  -- Modestas Vainius <modax@debian.org>  Tue, 07 Dec 2010 00:14:46 +0200
 
