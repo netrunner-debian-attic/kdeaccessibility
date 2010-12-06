@@ -1,5 +1,6 @@
-kdeaccessibility (4:4.4.5-3) UNRELEASED; urgency=low
+kdeaccessibility (4:4.4.5-3) unstable; urgency=low
 
+  [ Modestas Vainius ]
   * Fix kttsd crash on startup when there is no configured talkers. Merge the
     fix to the kcmkttsd_permanent_settings_jobmgr_fixes.diff patch as it
     triggers this crash by using broken piece of upstream code.
@@ -7,7 +8,7 @@ kdeaccessibility (4:4.4.5-3) UNRELEASED; urgency=low
   * Fill list of available output modules in KTTS job manager even when default
     module is unknown (kcmkttsd_permanent_settings_jobmgr_fixes.diff updated).
 
- -- Modestas Vainius <modax@debian.org>  Tue, 07 Dec 2010 00:14:46 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Tue, 07 Dec 2010 01:23:34 +0200
 
 kdeaccessibility (4:4.4.5-2) unstable; urgency=low
 
