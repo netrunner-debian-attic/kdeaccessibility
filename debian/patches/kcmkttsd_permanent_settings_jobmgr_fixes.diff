@@ -404,6 +404,35 @@ be RC bug free).
  int Speaker::getCurrentJobNum()
  { 
      return 0;// TODO: ask speech dispatcher if it's needed...
+@@ -819,6 +852,9 @@ QStringList Speaker::outputModules()
+ 
+ QStringList Speaker::languagesByModule(const QString & module)
+ {
++    if (module.isEmpty())
++        return QStringList();
++
+     QStringList languages;
+     if (spd_set_output_module(d->connection, module.toUtf8().data()) == 0)
+     {
+@@ -850,12 +886,18 @@ void Speaker::setVolume(int volume)
+ 
+ void Speaker::setOutputModule(const QString & module)
+ {
++    if (module.isEmpty())
++        return;
++
+     int result = spd_set_output_module(d->connection, module.toUtf8().data());
+     // discard result for now, TODO: add error reporting
+ }
+ 
+ void Speaker::setLanguage(const QString & language)
+ {
++    if (language.isEmpty())
++        return;
++
+     int result = spd_set_language(d->connection, language.toUtf8().data());
+     // discard result for now, TODO: add error reporting
+ }
 --- a/kttsd/kttsd/speaker.h
 +++ b/kttsd/kttsd/speaker.h
 @@ -380,6 +380,8 @@ public:
