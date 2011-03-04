@@ -1,2 +1,7 @@
 #dev symlink
 ./usr/lib/libkttsd.so
+
+#Manpages are compressed
+./usr/share/man/man1/kmag.1
+./usr/share/man/man1/kmousetool.1
+./usr/share/man/man1/kmouth.1

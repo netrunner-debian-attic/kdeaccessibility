@@ -8,7 +8,9 @@ usr/share/doc/kde/HTML/en/kmouth/kmouthctts.png
 usr/share/doc/kde/HTML/en/kmouth/kmouthcwcp.png
 usr/share/doc/kde/HTML/en/kmouth/kmouthedit.png
 usr/share/doc/kde/HTML/en/kmouth/kmouthmain.png
-usr/share/doc/kde/HTML/en/kmouth/kmouthwizard.png
+usr/share/doc/kde/HTML/en/kmouth/kmouthwizard1.png
+usr/share/doc/kde/HTML/en/kmouth/kmouthwizard2.png
+usr/share/doc/kde/HTML/en/kmouth/kmouthwizard3.png
 usr/share/doc/kde/HTML/en/kmouth/man-kmouth.1.docbook
 usr/share/icons/hicolor/16x16/actions/female.png
 usr/share/icons/hicolor/16x16/actions/male.png
@@ -24,7 +26,6 @@ usr/share/icons/hicolor/32x32/apps/kmouth.png
 usr/share/icons/hicolor/48x48/actions/nospeak.png
 usr/share/icons/hicolor/48x48/actions/speak.png
 usr/share/icons/hicolor/48x48/apps/kmouth.png
-usr/share/icons/mono/scalable/apps/kmouth.svgz
 usr/share/kde4/apps/kmouth/books/de/de-courteousness.phrasebook
 usr/share/kde4/apps/kmouth/books/de/de-greetings.phrasebook
 usr/share/kde4/apps/kmouth/books/de/de-howareyou.phrasebook

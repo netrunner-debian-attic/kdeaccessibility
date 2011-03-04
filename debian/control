@@ -64,7 +64,7 @@ Description: a type-and-say frontend for speech synthesizers
  .
  This package is part of KDE 4 accessibility module.
 
-Package: kttsd
+Package: jovie
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, speech-dispatcher

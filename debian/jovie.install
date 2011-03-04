@@ -1,0 +1,15 @@
+usr/bin/jovie
+usr/lib/kde4/kcm_kttsd.so
+usr/lib/libkttsd.so.4
+usr/lib/libkttsd.so.4.6.0
+usr/share/applications/kde4/jovieapp.desktop
+usr/share/doc/kde/HTML/en/jovie/*
+usr/share/kde4/apps/jovie/*
+usr/share/kde4/services/jovie.desktop
+usr/share/kde4/services/kcmkttsd.desktop
+usr/share/kde4/services/kttsd.desktop
+usr/share/kde4/servicetypes/jovie_filterplugin.desktop
+usr/share/kde4/apps/kttsd/xslt/SSMLtoPlainText.xsl
+# there can be plugins installed conditionally on external libraries not available on all archs
+usr/lib/kde4/jovie_*.so
+usr/share/kde4/services/jovie_*.desktop
