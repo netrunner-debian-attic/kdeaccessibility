@@ -9,6 +9,7 @@ kdeaccessibility (4:4.6.1-0r0) UNRELEASED; urgency=low
     - TODO: fix description, update jovie.README.Debian
   * Update installed files.
     - TODO: Add kaccesible package?
+  * Bump Standards-Version to 3.9.1, no changes required.
 
  -- José Manuel Santamaría Lema <panfaust@gmail.com>  Fri, 04 Mar 2011 00:49:46 +0100
 
