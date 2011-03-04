@@ -2,6 +2,9 @@ kdeaccessibility (4:4.6.1-0r0) UNRELEASED; urgency=low
 
   * Non-maintainer upload.
   * Remove backport_kttsd_1072198_1138400.diff, no longer needed.
+  * Disable the following patches:
+    - kcmkttsd_permanent_settings_jobmgr_fixes.diff
+    - kcmkttsd_support_talker_editing.diff
 
  -- José Manuel Santamaría Lema <panfaust@gmail.com>  Fri, 04 Mar 2011 00:49:46 +0100
 
