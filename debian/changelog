@@ -17,6 +17,7 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
 
   [ Pino Toscano ]
   * Small updates to the descriptions.
+  * Update lintian overrides.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 04 Mar 2011 00:49:46 +0100
 
