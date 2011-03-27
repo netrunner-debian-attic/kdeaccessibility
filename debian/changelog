@@ -21,6 +21,8 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
   * Switch from kttsd to jovie in depends of kdeaccessibility and kmouth.
   * Provide a transitional kttsd package for migrating to jovie; they need to
     conflict as jovie has still few "kttsd" files.
+  * Remove unused build dependencies:
+    - libasound2-dev
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 04 Mar 2011 00:49:46 +0100
 
