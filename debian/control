@@ -71,7 +71,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, speech-dispatcher
 Recommends: speech-dispatcher-festival | espeak | flite, kmouth
 Homepage: http://accessibility.kde.org/developer/kttsd
 Description: text-to-speech system for KDE
- The KDE Text-to-Speech system is a plugin based service that allows any KDE
+ The Jovie text-to-speech system is a plugin based service that allows any KDE
  (or non-KDE) application to speak using the D-Bus interface.
  .
  It uses the speech-dispatcher daemon for the actual speech job; kmouth is an
