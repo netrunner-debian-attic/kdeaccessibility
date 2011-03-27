@@ -35,7 +35,7 @@ Section: kde
 Description: monochromatic icons theme
  A monochromatic icon theme, designed for accessibility purposes.
  .
- This package is part of KDE accessibility module.
+ This package is part of the KDE accessibility module.
 
 Package: kmag
 Architecture: any
@@ -49,7 +49,7 @@ Description: screen magnifier tool
  useful for a variety of people: from researchers to artists to web-designers to
  people with low vision.
  .
- This package is part of KDE accessibility module.
+ This package is part of the KDE accessibility module.
 
 Package: kmouth
 Architecture: any
@@ -62,7 +62,7 @@ Description: type-and-say frontend for speech synthesizers
  It includes a history of spoken sentences from which the user can select
  sentences to be re-spoken.
  .
- This package is part of KDE 4 accessibility module.
+ This package is part of the KDE accessibility module.
 
 Package: jovie
 Section: utils
@@ -79,7 +79,7 @@ Description: text-to-speech system for KDE
  It uses the speech-dispatcher daemon for the actual speech job; kmouth is an
  useful front-end for it.
  .
- This package is part of KDE accessibility module.
+ This package is part of the KDE accessibility module.
 
 Package: kttsd
 Section: utils
@@ -98,7 +98,7 @@ Description: mouse manipulation tool for the disabled
  designed to help those with repetitive strain injuries, for whom pressing
  buttons hurts.
  .
- This package is part of KDE accessibility module.
+ This package is part of the KDE accessibility module.
 
 
 Package: kdeaccessibility-dbg
