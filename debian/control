@@ -27,12 +27,12 @@ Description: accessibility packages from the official KDE release
  educational, graphics and software development.
  .
  This metapackage includes a collection of programs to make KDE more
- accessible, provided with the official release of KDE 4.
+ accessible, provided with the official release of KDE.
 
 Package: kde-icons-mono
 Architecture: all
 Section: kde
-Description: a monochromatic icons theme
+Description: monochromatic icons theme
  A monochromatic icon theme, designed for accessibility purposes.
  .
  This package is part of KDE accessibility module.
@@ -41,7 +41,7 @@ Package: kmag
 Architecture: any
 Section: utils
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: a screen magnifie
+Description: screen magnifier tool
  KDE's screen magnifier tool.
  .
  You can use KMagnifier to magnify a part of the screen just as you would use
@@ -56,7 +56,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, kttsd
 Replaces: kttsd (<< 4:4.2.2-2)
 Section: utils
-Description: a type-and-say frontend for speech synthesizers
+Description: type-and-say frontend for speech synthesizers
  KDE's type-and-say frontend for speech synthesizers.
  .
  It includes a history of spoken sentences from which the user can select
@@ -70,7 +70,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, speech-dispatcher
 Recommends: speech-dispatcher-festival | espeak | flite, kmouth
 Homepage: http://accessibility.kde.org/developer/kttsd
-Description: a Text-to-Speech system for KDE
+Description: text-to-speech system for KDE
  The KDE Text-to-Speech system is a plugin based service that allows any KDE
  (or non-KDE) application to speak using the D-Bus interface.
  .

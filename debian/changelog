@@ -15,6 +15,9 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
   * Bump kdelibs5-dev to 4:4.6.
   * Bump kde-sc-dev-latest build dependency to 4:4.6.1.
 
+  [ Pino Toscano ]
+  * Small updates to the descriptions.
+
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 04 Mar 2011 00:49:46 +0100
 
 kdeaccessibility (4:4.4.5-4) unstable; urgency=low
