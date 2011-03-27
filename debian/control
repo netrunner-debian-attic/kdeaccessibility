@@ -68,6 +68,8 @@ Package: jovie
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, speech-dispatcher
+Replaces: jovie
+Conflicts: jovie
 Recommends: speech-dispatcher-festival | espeak | flite, kmouth
 Homepage: http://accessibility.kde.org/developer/kttsd
 Description: text-to-speech system for KDE
@@ -78,6 +80,14 @@ Description: text-to-speech system for KDE
  useful front-end for it.
  .
  This package is part of KDE accessibility module.
+
+Package: kttsd
+Section: utils
+Architecture: all
+Depends: ${misc:Depends}, jovie
+Description: transitional package for jovie
+ This is a transitional package provided to ease upgrade from kttsd
+ to jovie.
 
 Package: kmousetool
 Section: utils
