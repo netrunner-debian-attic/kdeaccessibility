@@ -68,8 +68,8 @@ Package: jovie
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, speech-dispatcher
-Replaces: jovie
-Conflicts: jovie
+Replaces: kttsd (<< 4:4.6)
+Breaks: kttsd (<< 4:4.6)
 Provides: kttsd
 Recommends: speech-dispatcher-festival | espeak | flite, kmouth
 Homepage: http://accessibility.kde.org/developer/kttsd
