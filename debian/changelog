@@ -23,6 +23,7 @@ kdeaccessibility (4:4.6.1-0r3) UNRELEASED; urgency=low
   * Make jovie provide kttsd, as it provides also the kttsd D-Bus API.
   * Remove unused build dependencies:
     - libasound2-dev
+  * Add kaccessible as dependency of the kdeaccessibility meta package.
 
   [ Modestas Vainius ]
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.
