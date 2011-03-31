@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.6.1-0r3) UNRELEASED; urgency=low
+kdeaccessibility (4:4.6.1-0r4) UNRELEASED; urgency=low
 
   * New upstream release.
 
@@ -29,7 +29,7 @@ kdeaccessibility (4:4.6.1-0r3) UNRELEASED; urgency=low
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.
   * Add kaccessible package.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 21:47:30 +0300
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 22:42:14 +0300
 
 kdeaccessibility (4:4.4.5-4) unstable; urgency=low
 
