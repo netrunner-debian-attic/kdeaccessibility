@@ -7,7 +7,7 @@ Build-Depends: kde-sc-dev-latest (>= 4:4.6.1),
  cmake, debhelper (>= 7.2.7~), pkg-kde-tools (>= 0.11),
  kdelibs5-dev (>= 4:4.6), libxtst-dev, libxt-dev,
  libspeechd-dev
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Homepage: http://www.kde.org
 Vcs-Browser: http://git.debian.org/?p=pkg-kde/kde-sc/kdeaccessibility.git
 Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
