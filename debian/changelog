@@ -27,7 +27,6 @@ kdeaccessibility (4:4.6.1-0r3) UNRELEASED; urgency=low
 
   [ Modestas Vainius ]
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.
-  * Bump Standards-Version to 3.9.1: no changes needed.
   * Add kaccessible package.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 21:47:30 +0300
