@@ -101,6 +101,20 @@ Description: mouse manipulation tool for the disabled
  .
  This package is part of the KDE accessibility module.
 
+Package: kaccessible
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: accessibility services for Qt applications
+ kaccessible implements a QAccessibleBridgePlugin to provide accessibility
+ services like focus tracking and a screenreader.
+ .
+ Components:
+   - kaccessibleapp is a dbus activation service that acts as proxy.
+   - kaccessiblebridge will be loaded by the QAccessible framework into each
+     Qt-/KDE-application.
+ .
+ This package is part of the KDE accessibility module.
 
 Package: kdeaccessibility-dbg
 Section: debug

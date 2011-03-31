@@ -10,7 +10,6 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
   * Rename kttsd package as jovie.
     - TODO: fix description, update jovie.README.Debian
   * Update installed files.
-    - TODO: Add kaccesible package?
   * Bump Standards-Version to 3.9.1, no changes required.
   * Bump kdelibs5-dev to 4:4.6.
   * Bump kde-sc-dev-latest build dependency to 4:4.6.1.
@@ -28,6 +27,7 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
   [ Modestas Vainius ]
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.
   * Bump Standards-Version to 3.9.1: no changes needed.
+  * Add kaccessible package.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 04 Mar 2011 00:49:46 +0100
 
