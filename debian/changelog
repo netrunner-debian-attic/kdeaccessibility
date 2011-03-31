@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
+kdeaccessibility (4:4.6.1-0r3) UNRELEASED; urgency=low
 
   * New upstream release.
 
@@ -29,7 +29,7 @@ kdeaccessibility (4:4.6.1-0r1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.1: no changes needed.
   * Add kaccessible package.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Fri, 04 Mar 2011 00:49:46 +0100
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 21:47:30 +0300
 
 kdeaccessibility (4:4.4.5-4) unstable; urgency=low
 
