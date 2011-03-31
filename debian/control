@@ -107,12 +107,12 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: accessibility services for Qt applications
  kaccessible implements a QAccessibleBridgePlugin to provide accessibility
- services like focus tracking and a screenreader.
+ services like focus tracking and a screen reader.
  .
  Components:
-   - kaccessibleapp is a dbus activation service that acts as proxy.
-   - kaccessiblebridge will be loaded by the QAccessible framework into each
-     Qt-/KDE-application.
+  * kaccessibleapp: a D-Bus activation service that acts as proxy.
+  * kaccessiblebridge: a Qt plugin which will be loaded by the QAccessible
+    framework in each Qt and KDE application.
  .
  This package is part of the KDE accessibility module.
 
