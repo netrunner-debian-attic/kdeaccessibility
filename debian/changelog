@@ -28,6 +28,8 @@ kdeaccessibility (4:4.6.1-0r4) UNRELEASED; urgency=low
   [ Modestas Vainius ]
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.
   * Add kaccessible package.
+  * Add kmouth to kde-icons-mono Breaks/Replaces due to misplaced kmouth.svgz
+    mono icon.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 22:42:14 +0300
 
