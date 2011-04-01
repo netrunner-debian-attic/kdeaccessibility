@@ -1,4 +1,4 @@
-kdeaccessibility (4:4.6.1-0r4) UNRELEASED; urgency=low
+kdeaccessibility (4:4.6.1-0r5) UNRELEASED; urgency=low
 
   * New upstream release.
 
@@ -31,7 +31,7 @@ kdeaccessibility (4:4.6.1-0r4) UNRELEASED; urgency=low
   * Add kmouth to kde-icons-mono Breaks/Replaces due to misplaced kmouth.svgz
     mono icon.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 31 Mar 2011 22:42:14 +0300
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 02 Apr 2011 02:11:36 +0300
 
 kdeaccessibility (4:4.4.5-4) unstable; urgency=low
 
