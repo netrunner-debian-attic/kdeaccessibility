@@ -4,9 +4,8 @@ kdeaccessibility (4:4.6.2-0r0) UNRELEASED; urgency=low
 
   [ José Manuel Santamaría Lema ]
   * Remove backport_kttsd_1072198_1138400.diff, no longer needed.
-  * Disable the following patches:
+  * Disable the following patch:
     - kcmkttsd_permanent_settings_jobmgr_fixes.diff
-    - kcmkttsd_support_talker_editing.diff
   * Rename kttsd package as jovie.
     - TODO: fix description, update jovie.README.Debian
   * Update installed files.
@@ -24,6 +23,8 @@ kdeaccessibility (4:4.6.2-0r0) UNRELEASED; urgency=low
   * Remove unused build dependencies:
     - libasound2-dev
   * Add kaccessible as dependency of the kdeaccessibility meta package.
+  * Extract the last useful part from kcmkttsd_support_talker_editing.diff to
+    a new jovie_scroll_when_add.diff, and remove the former patch.
 
   [ Modestas Vainius ]
   * Switch debian/rules engine to dhmk based qt-kde-team/2/*.

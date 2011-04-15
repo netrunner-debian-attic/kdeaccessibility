@@ -1,0 +1,19 @@
+From: Modestas Vainius <modax@debian.org>
+Subject: Fix scrolling when adding a talker
+Last-Update: 2011-04-15
+Origin: vendor
+Forwarded: no
+
+This fixes the scrolling to a new talker row after adding a new one.
+
+--- a/jovie/kcmkttsmgr/kcmkttsmgr.cpp
++++ b/jovie/kcmkttsmgr/kcmkttsmgr.cpp
+@@ -733,7 +733,7 @@
+         m_talkerListModel.appendRow (code);
+ 
+         // Make sure visible.
+-        const QModelIndex modelIndex = m_talkerListModel.index (m_talkerListModel.rowCount(),
++        const QModelIndex modelIndex = m_talkerListModel.index (m_talkerListModel.rowCount()-1,
+                                        0, QModelIndex());
+         talkersView->scrollTo (modelIndex);
+ 
