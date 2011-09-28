@@ -15,7 +15,7 @@ Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
 Package: kdeaccessibility
 Architecture: all
 Section: kde
-Depends: kde-icons-mono (>= ${source:Version}), kmag (>= ${source:Version}),
+Depends: kmag (>= ${source:Version}),
  kmouth (>= ${source:Version}), jovie (>= ${source:Version}),
  kmousetool (>= ${source:Version}), kaccessible (>= ${source:Version})
 Description: accessibility packages from the official KDE release
@@ -28,17 +28,6 @@ Description: accessibility packages from the official KDE release
  .
  This metapackage includes a collection of programs to make KDE more
  accessible, provided with the official release of KDE.
-
-Package: kde-icons-mono
-Architecture: all
-Section: kde
-Depends: ${misc:Depends}
-Replaces: kmouth (<< 4:4.6)
-Breaks: kmouth (<< 4:4.6)
-Description: monochromatic icons theme
- A monochromatic icon theme, designed for accessibility purposes.
- .
- This package is part of the KDE accessibility module.
 
 Package: kmag
 Architecture: any
