@@ -1,1 +1,2 @@
 jovie: package-name-doesnt-match-sonames libkttsd4
+jovie: no-symbols-control-file usr/lib/libkttsd.so.4.7.0
