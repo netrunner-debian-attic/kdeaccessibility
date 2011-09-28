@@ -14,7 +14,6 @@ Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
 
 Package: kdeaccessibility
 Architecture: all
-Section: kde
 Depends: kmag (>= ${source:Version}),
  kmouth (>= ${source:Version}), jovie (>= ${source:Version}),
  kmousetool (>= ${source:Version}), kaccessible (>= ${source:Version})
