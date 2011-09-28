@@ -18,6 +18,7 @@ Section: kde
 Depends: kmag (>= ${source:Version}),
  kmouth (>= ${source:Version}), jovie (>= ${source:Version}),
  kmousetool (>= ${source:Version}), kaccessible (>= ${source:Version})
+Recommends: kde-icons-mono
 Description: accessibility packages from the official KDE release
  KDE is produced by an international technology team that creates free and open
  source software for desktop and portable computing. Among KDE's products are a
