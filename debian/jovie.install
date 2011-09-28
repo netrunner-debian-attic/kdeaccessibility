@@ -2,7 +2,7 @@ usr/bin/jovie
 usr/lib/kde4/jovie_*.so
 usr/lib/kde4/kcm_kttsd.so
 usr/lib/libkttsd.so.4
-usr/lib/libkttsd.so.4.6.0
+usr/lib/libkttsd.so.4.7.0
 usr/share/applications/kde4/jovieapp.desktop
 usr/share/doc/kde/HTML/en/jovie/*
 usr/share/kde4/apps/jovie/*
