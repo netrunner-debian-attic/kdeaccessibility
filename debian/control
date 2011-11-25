@@ -110,7 +110,7 @@ Description: accessibility services for Qt applications
 Package: kdeaccessibility-dbg
 Section: debug
 Architecture: any
-Depends: kdebase-runtime-dbg
+Depends: kde-runtime-dbg
 Suggests: kdeaccessibility (= ${source:Version})
 Priority: extra
 Description: debugging symbols for kdeaccessibility

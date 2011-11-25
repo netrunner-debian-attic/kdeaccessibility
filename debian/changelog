@@ -10,6 +10,11 @@ kdeaccessibility (4:4.7.2-0r1) UNRELEASED; urgency=low
   * Update installed files.
   * Update lintian overrides.
 
+  [ Pino Toscano ]
+  * Manage some packages renamings:
+    - kdeaccessibility-dbg depends on kde-runtime-dbg instead of
+      kdebase-runtime-dbg.
+
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Tue, 27 Sep 2011 15:16:07 +0200
 
 kdeaccessibility (4:4.6.5-1) unstable; urgency=low
