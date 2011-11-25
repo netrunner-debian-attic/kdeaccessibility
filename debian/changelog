@@ -14,6 +14,7 @@ kdeaccessibility (4:4.7.2-0r1) UNRELEASED; urgency=low
   * Manage some packages renamings:
     - kdeaccessibility-dbg depends on kde-runtime-dbg instead of
       kdebase-runtime-dbg.
+  * Add ${misc:Depends} where missing.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Tue, 27 Sep 2011 15:16:07 +0200
 

@@ -14,7 +14,7 @@ Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
 
 Package: kdeaccessibility
 Architecture: all
-Depends: kmag (>= ${source:Version}),
+Depends: ${misc:Depends}, kmag (>= ${source:Version}),
  kmouth (>= ${source:Version}), jovie (>= ${source:Version}),
  kmousetool (>= ${source:Version}), kaccessible (>= ${source:Version})
 Recommends: kde-icons-mono
@@ -110,7 +110,7 @@ Description: accessibility services for Qt applications
 Package: kdeaccessibility-dbg
 Section: debug
 Architecture: any
-Depends: kde-runtime-dbg
+Depends: ${misc:Depends}, kde-runtime-dbg
 Suggests: kdeaccessibility (= ${source:Version})
 Priority: extra
 Description: debugging symbols for kdeaccessibility
