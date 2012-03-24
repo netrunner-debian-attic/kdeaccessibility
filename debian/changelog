@@ -1,5 +1,8 @@
 kdeaccessibility (4:4.7.4-3) UNRELEASED; urgency=low
 
+  [ Pino Toscano ]
+  * Move the transitional kttsd package to Section oldlibs and set Priority
+    extra.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 24 Mar 2012 20:01:48 +0100
 

@@ -75,8 +75,9 @@ Description: text-to-speech system for KDE
  This package is part of the KDE accessibility module.
 
 Package: kttsd
-Section: utils
+Section: oldlibs
 Architecture: all
+Priority: extra
 Depends: ${misc:Depends}, jovie
 Description: transitional package for jovie
  This is a transitional package provided to ease upgrade from kttsd
