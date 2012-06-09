@@ -13,23 +13,6 @@ Homepage: http://www.kde.org
 Vcs-Browser: http://git.debian.org/?p=pkg-kde/kde-sc/kdeaccessibility.git
 Vcs-Git: git://git.debian.org/pkg-kde/kde-sc/kdeaccessibility.git
 
-Package: kdeaccessibility
-Architecture: all
-Depends: ${misc:Depends}, kmag (>= ${source:Version}),
- kmouth (>= ${source:Version}), jovie (>= ${source:Version}),
- kmousetool (>= ${source:Version}), kaccessible (>= ${source:Version})
-Recommends: kde-icons-mono
-Description: accessibility packages from the official KDE release
- KDE is produced by an international technology team that creates free and open
- source software for desktop and portable computing. Among KDE's products are a
- modern desktop system for Linux and UNIX platforms, comprehensive office
- productivity and groupware suites and hundreds of software titles in many
- categories including Internet and web applications, multimedia, entertainment,
- educational, graphics and software development.
- .
- This metapackage includes a collection of programs to make KDE more
- accessible, provided with the official release of KDE.
-
 Package: kmag
 Architecture: any
 Section: utils

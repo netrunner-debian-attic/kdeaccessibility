@@ -4,6 +4,7 @@ kdeaccessibility (4:4.7.4-3) UNRELEASED; urgency=low
   * Move the transitional kttsd package to Section oldlibs and set Priority
     extra.
   * Bump Standards-Version to 3.9.3, no changes required.
+  * Drop the kdeaccessibility metapackage, moved to meta-kde.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 24 Mar 2012 20:01:48 +0100
 
